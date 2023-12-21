@@ -1,3 +1,4 @@
+const { query } = require('express');
 const UsersDao = require('../dao/mongo/usersDao');
 const UsersDaoManager = new UsersDao();
 
@@ -13,7 +14,8 @@ class UserServices {
 
   async findOneByEmail(email) {
     try {
-      const user = await UsersDaoManager.getOne(email);
+      const query = { email: email };
+      const user = await UsersDaoManager.getOne(query);
       if (!user) {
         console.log('nose encontro');
         return null;

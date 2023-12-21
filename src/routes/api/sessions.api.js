@@ -1,5 +1,8 @@
 const { Router } = require('express');
 const passport = require('passport');
+const SessionController = require('../../controllers/Session.controller');
+
+const sessionController = new SessionController();
 
 module.exports = (app) => {
   let router = new Router();
@@ -9,33 +12,21 @@ module.exports = (app) => {
   router.post(
     '/login',
     passport.authenticate('login', { failureRedirect: '/authfailed' }),
-    async (req, res) => {
-      if (!req.user) {
-        return res
-          .status(400)
-          .send({ status: error, error: 'credenciales invalidas' });
-      }
-      return res.cookie('cookieJWT', req.user.token).redirect('/products');
-    },
+    sessionController.login,
   ),
     router.post(
       '/register',
       passport.authenticate('register', { failureRedirect: '/authfailed' }),
-      async (req, res) => {
-        return res.redirect('/login');
-      },
+      sessionController.register,
     ),
     router.get(
       '/login-github',
       passport.authenticate('github', { scope: ['user:email'] }),
-      async (req, res) => {},
     ),
     router.get(
       '/githubcallback',
       passport.authenticate('github', { failureRedirect: '/authfailed' }),
-      async (req, res) => {
-        return res.cookie('cookieJWT', req.user.token).redirect('/products');
-      },
+      sessionController.githubcallback,
     ),
     router.get(
       '/logout',
@@ -43,31 +34,12 @@ module.exports = (app) => {
         session: false,
         failureRedirect: '/login',
       }),
-      async (req, res) => {
-        try {
-          if (req.cookies['cookieJWT']) {
-            // Elimina la cookie
-            res.clearCookie('cookieJWT').status(200).redirect('/');
-          } else {
-            res.status(400).redirect('/login');
-          }
-        } catch (error) {
-          console.log(error);
-          return error;
-        }
-      },
+      sessionController.logout,
     );
 
   router.get(
     '/current',
     passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
-    async (req, res) => {
-      try {
-        return res.send({ status: 'Success', payload: req.user });
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
-    },
+    sessionController.current,
   );
 };

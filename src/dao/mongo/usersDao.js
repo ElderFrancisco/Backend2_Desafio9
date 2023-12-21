@@ -4,14 +4,14 @@ class UsersDao {
     try {
       return await userModel.create(User);
     } catch (error) {
-      console.log('error on UsersDao createOne');
+      console.log('error on UsersDao createOne:' + error);
     }
   }
   async getOne(query) {
     try {
       return await userModel.findOne(query).lean();
     } catch (error) {
-      console.log('error on UsersDao getOne');
+      console.log('error on UsersDao getOne :' + error);
     }
   }
 }

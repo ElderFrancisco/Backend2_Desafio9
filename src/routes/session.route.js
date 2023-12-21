@@ -50,7 +50,7 @@ module.exports = (app) => {
   });
 
   router.get(
-    '/private',
+    '/current',
     passport.authenticate('jwt', { session: false }),
     async (req, res) => {
       try {

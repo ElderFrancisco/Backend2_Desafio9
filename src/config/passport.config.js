@@ -111,6 +111,7 @@ const initializePassport = () => {
             password: HashController.createHash(''),
             cartId: cartId._id,
           };
+          console.log(newUser);
           const result = await usersServices.createNewUser(newUser);
 
           return done(null, result);
