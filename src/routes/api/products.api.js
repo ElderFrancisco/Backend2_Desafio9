@@ -11,12 +11,14 @@ module.exports = (app) => {
   router.get(
     '/',
     passport.authenticate('jwt', { session: false }),
+
     productController.getProducts,
   );
 
   router.post(
     '/',
     passport.authenticate('jwt', { session: false }),
+    isAdminMiddleware,
     productController.addProduct,
   );
 
@@ -28,13 +30,24 @@ module.exports = (app) => {
 
   router.put(
     '/:pid',
-    //passport.authenticate('jwt', { session: false }),
+    passport.authenticate('jwt', { session: false }),
+    isAdminMiddleware,
     productController.updateProductById,
   );
 
   router.delete(
     '/:pid',
+
     passport.authenticate('jwt', { session: false }),
+    isAdminMiddleware,
     productController.deleteProductById,
   );
+};
+
+const isAdminMiddleware = (req, res, next) => {
+  if (req.user && req.user.user.rol === 'admin') {
+    next();
+  } else {
+    res.status(403).json({ error: 'Acceso no autorizado' });
+  }
 };

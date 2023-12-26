@@ -14,6 +14,7 @@
       const socket = io();
  
         socket.on('Chat', (messages) => {
+          console.log(messages)
         const listaMensajes = document.getElementById('lista-mensajes');
         
         listaMensajes.innerHTML = '';

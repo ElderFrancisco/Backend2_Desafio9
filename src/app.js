@@ -3,7 +3,7 @@ const http = require('http');
 const routes = require('./routes');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
-//const utilSocket = require('./util/socket');
+const utilSocket = require('./util/socket');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -20,6 +20,7 @@ class Server {
     this.server = http.createServer(this.app);
     this.connect();
     this.routes();
+    this.utilSocket();
   }
 
   settings() {
@@ -45,7 +46,6 @@ class Server {
     );
     this.app.use(passport.initialize());
     this.app.use(passport.session());
-    //utilSocket(this.server);
     this.app.use(cookieParser());
   }
 
@@ -58,6 +58,9 @@ class Server {
       .catch((e) => {
         console.log('error al conectar mongo: ' + e);
       });
+  }
+  utilSocket() {
+    utilSocket(this.server);
   }
 
   routes() {
