@@ -9,7 +9,7 @@ class UsersDao {
   }
   async getAll() {
     try {
-      return await messageModel.findOne().lean();
+      return await messageModel.find().sort({ $natural: -1 });
     } catch (error) {
       console.log('error on UsersDao getOne :' + error);
     }

@@ -5,10 +5,7 @@ const MessageDaoManager = new MessageDao();
 class MessageServices {
   async getMessages() {
     try {
-      const result = await MessageDaoManager.getAll();
-      console.log(result);
-      console.log('///////////');
-      return result;
+      return await MessageDaoManager.getAll();
     } catch (error) {
       console.log('Error on MessageServices, getMessages function: ' + error);
       return error;

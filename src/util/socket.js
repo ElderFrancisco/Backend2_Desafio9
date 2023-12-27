@@ -12,11 +12,9 @@ module.exports = (server) => {
     socket.emit('Chat', await messageServices.getMessages());
 
     socket.on('newChat', async (message) => {
-      const newMessage = await messageServices.addMessage(message);
-      if (!newMessage) {
-        console.log('completa los datos');
-      }
-      socket.emit('Chat', await messageController.getMessages());
+      await messageServices.addMessage(message);
+
+      socket.emit('Chat', await messageServices.getMessages());
     });
   });
 };

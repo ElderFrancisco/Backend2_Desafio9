@@ -152,6 +152,16 @@ class CartController {
       return null;
     }
   }
+  async purchaseCartById(req, res) {
+    try {
+      const cid = req.params.cid;
+      const result = await CartServicesManager.purchaseCart(cid);
+      return res.status(201).json({ status: 'Success', payload: result });
+    } catch (error) {
+      onsole.log(error);
+      return res.status(500).json({ status: 'error' });
+    }
+  }
 }
 
 module.exports = CartController;

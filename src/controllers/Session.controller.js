@@ -49,40 +49,7 @@ class SessionController {
       onsole.log(error);
       return res.status(500).json({ status: 'error' });
     }
-  } /*
-
-  async emptyCartById(req, res) {
-    try {
-      const cid = req.params.cid;
-      const result = await CartServicesManager.emptyCartById(cid);
-      if (!result) {
-        return res
-          .status(404)
-          .json({ status: 'Error', Error: 'Cart Id not found' });
-      }
-      return res.status(201).json({ status: 'Success', payload: result });
-    } catch (error) {
-      onsole.log(error);
-      return res.status(500).json({ status: 'error' });
-    }
   }
-
-  async renderGetCartById(req, res) {
-    try {
-      const cid = req.params.cid;
-      const result = await CartServicesManager.getCartById(cid);
-
-      if (!result) {
-        return res
-          .status(404)
-          .json({ status: 'error', error: 'Cart not found' });
-      }
-      return res.status(200).render('cartView', { cart: result });
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }*/
 }
 
 module.exports = SessionController;
