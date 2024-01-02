@@ -1,7 +1,8 @@
-const { query } = require('express');
 const CartsDao = require('../dao/mongo/cartsDao');
+const UsersDao = require('../dao/mongo/usersDao');
 
 const CartsDaoManager = new CartsDao();
+const UsersDaoManager = new UsersDao();
 
 function getUrl(params, path, number) {
   const nextPage = parseInt(params.page) + number;
@@ -145,6 +146,49 @@ class CartServices {
       const cartToUpdate = await CartsDaoManager.getOne(query);
       if (!cartToUpdate) return null;
       cartToUpdate.products = [];
+
+      const result = CartsDaoManager.updateOne(query, cartToUpdate);
+      return result;
+    } catch (error) {
+      console.log('Error on ProductServices, getProducts function: ' + error);
+      return error;
+    }
+  }
+
+  async purchaseCart(cid) {
+    try {
+      const query = { cartId: cid };
+
+      const user = await UsersDaoManager.getOne(query);
+      console.log(user);
+      if (!user) return null;
+      const query2 = { _id: cid };
+      const cartUser = await CartsDaoManager.getOne(query2);
+      const productsArray = cartUser.products;
+      productsArray.forEach((productFull) => {
+        const indexProduct = cartToUpdate.products.findIndex((product) => {
+          return product.product._id == productFull.product;
+        });
+        if (indexProduct >= 0) {
+          cartToUpdate.products[indexProduct].quantity += productFull.quantity;
+        } else {
+          let quantityOfProduct = 1;
+          if (productFull.quantity !== null || productFull.quantity !== 0) {
+            quantityOfProduct = productFull.quantity;
+          }
+          cartToUpdate.products.push({
+            product: productFull.product,
+            quantity: quantityOfProduct,
+          });
+        }
+      });
+      const codigoAleatorio = Math.random().toString(36).substring(2, 8);
+      const ticket = {
+        code: codigoAleatorio,
+
+        purchaser: user.email,
+      };
+      return;
 
       const result = CartsDaoManager.updateOne(query, cartToUpdate);
       return result;

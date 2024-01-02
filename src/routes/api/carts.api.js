@@ -53,7 +53,7 @@ module.exports = (app) => {
     cartController.emptyCartById,
   );
 
-  router.post(
+  router.get(
     '/:cid/purchase',
     passport.authenticate('jwt', { session: false }),
     cartController.purchaseCartById,
