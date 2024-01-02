@@ -212,8 +212,6 @@ class CartServices {
         cartUser.products = productosFallidos;
         const query3 = { _id: cartUser._id };
         await CartsDaoManager.updateOne(query3, cartUser);
-      } else {
-        console.log('No hay productos fallidos');
       }
       const codigoAleatorio = Math.random().toString(36).substring(2, 8);
       const ticket = {
