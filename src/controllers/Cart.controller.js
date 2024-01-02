@@ -76,7 +76,7 @@ class CartController {
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      onsole.log(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -92,7 +92,7 @@ class CartController {
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      onsole.log(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -115,7 +115,7 @@ class CartController {
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      onsole.log(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -131,7 +131,7 @@ class CartController {
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      onsole.log(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -156,9 +156,10 @@ class CartController {
     try {
       const cid = req.params.cid;
       const result = await CartServicesManager.purchaseCart(cid);
+
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      onsole.log(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }

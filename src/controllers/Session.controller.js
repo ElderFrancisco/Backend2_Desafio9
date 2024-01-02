@@ -25,7 +25,7 @@ class SessionController {
     try {
       return res.cookie('cookieJWT', req.user.token).redirect('/products');
     } catch (error) {
-      onsole.log(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -46,7 +46,7 @@ class SessionController {
     try {
       return res.send({ status: 'Success', payload: req.user });
     } catch (error) {
-      onsole.log(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }

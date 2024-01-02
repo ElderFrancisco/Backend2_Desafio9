@@ -71,8 +71,8 @@ class ProductServices {
 
   async findByIdAndUpdate(id, body) {
     try {
-      const query = {};
-      query['_id'] = id;
+      const query = { _id: id };
+
       return await ProductsDaoManager.updateOne(query, body);
     } catch (error) {
       console.log(

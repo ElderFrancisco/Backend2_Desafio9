@@ -1,8 +1,8 @@
 const ticketmodel = require('./models/ticket.model');
 class TicketsDao {
-  async createOne(message) {
+  async createOne(ticket) {
     try {
-      return await ticketmodel.create(message);
+      return await ticketmodel.create(ticket);
     } catch (error) {
       console.log('error on TicketsDao createOne:' + error);
     }
