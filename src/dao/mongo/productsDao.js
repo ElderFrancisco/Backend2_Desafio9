@@ -1,6 +1,6 @@
 const productModel = require('./models/products.model');
 class ProductsDao {
-  async getAll(params) {
+  async getAllPaginate(params) {
     try {
       return await productModel.paginate(params.query, {
         limit: params.limit,
@@ -9,7 +9,7 @@ class ProductsDao {
         lean: true,
       });
     } catch (error) {
-      console.log('error on ProductsDao getAll');
+      console.log('error on ProductsDao getAllPaginate');
     }
   }
   async createOne(product) {
@@ -41,6 +41,13 @@ class ProductsDao {
       return await productModel.deleteOne(query);
     } catch (error) {
       console.log('error on ProductsDao deleteOne');
+    }
+  }
+  async getAll() {
+    try {
+      return await productModel.find().limit(100).sort({ createdAt: -1 });
+    } catch (error) {
+      console.log('error on ProductsDao getAll' + error);
     }
   }
 }

@@ -41,7 +41,7 @@ class ProductServices {
     try {
       const urlPrev = getUrl(params, pathUrl, -1);
       const urlNext = getUrl(params, pathUrl, +1);
-      const productsList = await ProductsDaoManager.getAll(params);
+      const productsList = await ProductsDaoManager.getAllPaginate(params);
       const result = createResult(productsList, 'success', urlPrev, urlNext);
       return result;
     } catch (error) {
