@@ -11,6 +11,8 @@ const passport = require('passport');
 const initializePassport = require('./config/passport.config');
 const cookieParser = require('cookie-parser');
 const { config, mongo } = require('./config/config');
+const compression = require('express-compression');
+const errorHandler = require('./middlewares/error');
 
 class Server {
   constructor() {
@@ -20,7 +22,7 @@ class Server {
     this.server = http.createServer(this.app);
     this.connect();
     this.routes();
-    this.utilSocket();
+    this.middlewares();
   }
 
   settings() {
@@ -47,6 +49,11 @@ class Server {
     this.app.use(passport.initialize());
     this.app.use(passport.session());
     this.app.use(cookieParser());
+    this.app.use(
+      compression({
+        brotli: { enabled: true, zlib: {} },
+      }),
+    );
   }
 
   connect() {
@@ -59,8 +66,9 @@ class Server {
         console.log('error al conectar mongo: ' + e);
       });
   }
-  utilSocket() {
+  middlewares() {
     utilSocket(this.server);
+    this.app.use(errorHandler);
   }
 
   routes() {

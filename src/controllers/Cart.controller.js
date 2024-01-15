@@ -1,4 +1,7 @@
 const CartServices = require('../services/cart.services');
+const CustomError = require('../services/errors/customError');
+const EErrors = require('../services/errors/enums');
+const info = require('../services/errors/info');
 
 const CartServicesManager = new CartServices();
 
@@ -31,7 +34,14 @@ class CartController {
         : [];
       const products = productsBody.filter((e) => e.product && e.quantity);
       const result = await CartServicesManager.createNewCart(products);
-      if (!result) return res.status(400).json({ status: 'error' });
+      if (!result) {
+        CustomError.createError({
+          name: 'cart creation error',
+          cause: info(result),
+          message: 'error tryng to create cart',
+          code: EErrors.INVALID_TYPES_ERROR,
+        });
+      }
       return res.status(201).json(result);
     } catch (error) {
       console.log(error);
@@ -45,9 +55,12 @@ class CartController {
       const result = await CartServicesManager.getCartById(cid);
 
       if (!result) {
-        return res
-          .status(404)
-          .json({ status: 'error', error: 'Cart not found' });
+        new CustomError({
+          name: 'cart getCartById error',
+          cause: info(cid),
+          message: 'error tryng to getCartById',
+          code: EErrors.DATABASE_ERROR,
+        });
       }
       return res.status(200).json({ status: 'Success', payload: result });
     } catch (error) {

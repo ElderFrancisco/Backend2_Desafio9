@@ -17,7 +17,7 @@ module.exports = (app) => {
 
   router.get(
     '/:cid',
-    passport.authenticate('jwt', { session: false }),
+    //passport.authenticate('jwt', { session: false }),
     cartController.getCartById,
   );
 

@@ -83,8 +83,7 @@ class CartServices {
       const query = { _id: cid };
       return await CartsDaoManager.getOne(query);
     } catch (error) {
-      console.log('Error on CartServices, createNewCart function: ' + error);
-      return error;
+      return null;
     }
   }
   async getCarts(params, pathUrl) {
