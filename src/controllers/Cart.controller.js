@@ -1,7 +1,7 @@
-const CartServices = require('../services/cart.services');
-const CustomError = require('../services/errors/customError');
-const EErrors = require('../services/errors/enums');
-const info = require('../services/errors/info');
+import CartServices from '../services/cart.services.js';
+import CustomError from '../services/errors/customError.js';
+import EErrors from '../services/errors/enums.js';
+import info from '../services/errors/info.js';
 
 const CartServicesManager = new CartServices();
 
@@ -26,7 +26,7 @@ function getPathUrl(req) {
   }
 }
 
-class CartController {
+export default class CartController {
   async createNewCart(req, res) {
     try {
       const productsBody = Array.isArray(req.body.products)
@@ -38,7 +38,7 @@ class CartController {
         CustomError.createError({
           name: 'cart creation error',
           cause: info(result),
-          message: 'error tryng to create cart',
+          message: 'error trying to create cart',
           code: EErrors.INVALID_TYPES_ERROR,
         });
       }
@@ -58,7 +58,7 @@ class CartController {
         new CustomError({
           name: 'cart getCartById error',
           cause: info(cid),
-          message: 'error tryng to getCartById',
+          message: 'error trying to getCartById',
           code: EErrors.DATABASE_ERROR,
         });
       }
@@ -68,6 +68,7 @@ class CartController {
       return null;
     }
   }
+
   async getCarts(req, res) {
     try {
       const pathUrl = getPathUrl(req);
@@ -79,6 +80,7 @@ class CartController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async updateOneCartByIdProduct(req, res) {
     try {
       const cid = req.params.cid;
@@ -93,6 +95,7 @@ class CartController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async deleteProductById(req, res) {
     try {
       const cid = req.params.cid;
@@ -109,6 +112,7 @@ class CartController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async updateManyProducts(req, res) {
     try {
       const cid = req.params.cid;
@@ -165,6 +169,7 @@ class CartController {
       return null;
     }
   }
+
   async purchaseCartById(req, res) {
     try {
       const cid = req.params.cid;
@@ -177,5 +182,3 @@ class CartController {
     }
   }
 }
-
-module.exports = CartController;

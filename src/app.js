@@ -1,28 +1,34 @@
-const express = require('express');
-const http = require('http');
-const routes = require('./routes');
-const bodyParser = require('body-parser');
-const exphbs = require('express-handlebars');
-const utilSocket = require('./util/socket');
-const mongoose = require('mongoose');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const passport = require('passport');
-const initializePassport = require('./config/passport.config');
-const cookieParser = require('cookie-parser');
-const { config, mongo } = require('./config/config');
-const compression = require('express-compression');
-const errorHandler = require('./middlewares/error');
+import express from 'express';
+import http from 'http';
+import setupRoutes from './routes/index.js';
+import bodyParser from 'body-parser';
+import exphbs from 'express-handlebars';
+import utilSocket from './util/socket.js';
+import mongoose from 'mongoose';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
+import cookieParser from 'cookie-parser';
+import { config, mongo } from './config/config.js';
+import compression from 'express-compression';
+import errorHandler from './middlewares/error.js';
 
 class Server {
   constructor() {
-    this.app = express();
-    this.port = config.port || 3000;
-    this.settings();
-    this.server = http.createServer(this.app);
-    this.connect();
-    this.routes();
-    this.middlewares();
+    if (!Server.instance) {
+      this.app = express();
+      this.port = config.port || 3000;
+      this.settings();
+      this.server = http.createServer(this.app);
+      this.connect();
+      this.middlewares();
+      this.routes();
+
+      Server.instance = this;
+    }
+
+    return Server.instance;
   }
 
   settings() {
@@ -32,14 +38,14 @@ class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.engine('handlebars', exphbs.engine());
     this.app.set('view engine', 'handlebars');
-    this.app.set('views', __dirname + '/views');
+    this.app.set('views', `${__dirname}/views`);
     this.app.use(express.static(`${__dirname}/public`));
     this.app.use(
       session({
         store: MongoStore.create({
           mongoUrl: mongo.mongo_url,
           dbName: mongo.mongo_name,
-          ttl: 1100, //tiempo de vida de la sesion
+          ttl: 1100,
         }),
         secret: config.privatekey,
         resave: true,
@@ -66,13 +72,14 @@ class Server {
         console.log('error al conectar mongo: ' + e);
       });
   }
+
   middlewares() {
-    utilSocket(this.server);
     this.app.use(errorHandler);
+    utilSocket(this.server);
   }
 
   routes() {
-    routes(this.app);
+    setupRoutes(this.app);
   }
 
   listen() {
@@ -82,4 +89,4 @@ class Server {
   }
 }
 
-module.exports = new Server();
+export default new Server();

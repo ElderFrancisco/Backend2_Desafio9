@@ -1,5 +1,6 @@
-const ticketmodel = require('./models/ticket.model');
-class TicketsDao {
+import ticketmodel from './models/ticket.model.js';
+
+export default class TicketsDao {
   async createOne(ticket) {
     try {
       return await ticketmodel.create(ticket);
@@ -8,4 +9,3 @@ class TicketsDao {
     }
   }
 }
-module.exports = TicketsDao;

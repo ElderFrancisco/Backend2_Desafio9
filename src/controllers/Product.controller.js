@@ -1,3 +1,8 @@
+const CustomError = require('../services/errors/customError');
+const EErrors = require('../services/errors/enums');
+const info = require('../services/errors/info');
+const mongoose = require('mongoose');
+
 const ProductServices = require('../services/product.services');
 const allowedFields = [
   'title',
@@ -117,11 +122,27 @@ class ProductController {
   async getProductById(req, res) {
     try {
       const Id = req.params.pid;
+      if (!mongoose.Types.ObjectId.isValid(Id)) {
+        console.log('aaaaaaaa');
+
+        CustomError.CreateError({
+          name: 'Invalid  Types',
+          cause: 'causa',
+          message: 'Id debe ser tipo objectID',
+          code: EErrors.INVALID_TYPES_ERROR,
+        });
+      }
       const productId = await ProductServicesManager.findProductById(Id);
       if (productId == null) {
-        return res
-          .status(404)
-          .json({ status: 'error', error: 'product not found' });
+        /* CustomError.CreateError({
+          name: 'Product not found',
+          cause: info(Id),
+          message: 'Error Tryng to get Product',
+          code: EErrors.DATABASE_ERROR,
+        });*/
+        const error = new Error('hola');
+        throw error;
+        return;
       }
       return res.status(200).json({ status: 'success', payload: productId });
     } catch (error) {

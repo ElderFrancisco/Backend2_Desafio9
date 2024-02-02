@@ -65,7 +65,7 @@ class ProductServices {
       return await ProductsDaoManager.get(query);
     } catch (error) {
       console.log('Error on ProductServices, findProduct function: ' + error);
-      return error;
+      return null;
     }
   }
 

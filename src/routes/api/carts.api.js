@@ -1,10 +1,10 @@
-const { Router } = require('express');
-const CartController = require('../../controllers/Cart.controller');
-const passport = require('passport');
+import { Router } from 'express';
+import CartController from '../../controllers/Cart.controller.js';
+import passport from 'passport';
 
 const cartController = new CartController();
 
-module.exports = (app) => {
+export default (app) => {
   let router = new Router();
 
   app.use('/api/carts', router);
@@ -17,7 +17,7 @@ module.exports = (app) => {
 
   router.get(
     '/:cid',
-    //passport.authenticate('jwt', { session: false }),
+    passport.authenticate('jwt', { session: false }),
     cartController.getCartById,
   );
 
@@ -59,6 +59,7 @@ module.exports = (app) => {
     cartController.purchaseCartById,
   );
 };
+
 const isUserMiddleware = (req, res, next) => {
   if (req.user && req.user.user.rol === 'user') {
     next();
