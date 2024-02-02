@@ -1,8 +1,8 @@
-const MockingServices = require('../services/mocking.services');
+import MockingServices from '../services/mocking.services.js';
 
 const MockingServicesManager = new MockingServices();
 
-class MockingController {
+export default class MockingController {
   async mocking100products(req, res) {
     try {
       const number = parseInt(req.params.number) || 100;
@@ -14,5 +14,3 @@ class MockingController {
     }
   }
 }
-
-module.exports = MockingController;

@@ -1,6 +1,6 @@
-const { faker } = require('@faker-js/faker');
+import { faker } from '@faker-js/faker';
 
-module.exports = () => {
+export default () => {
   const randomCode = Math.random().toString(36).substring(2, 8);
   const arrayThumnnail = [];
   arrayThumnnail.push(faker.image.urlLoremFlickr());

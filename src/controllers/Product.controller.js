@@ -1,9 +1,9 @@
-const CustomError = require('../services/errors/customError');
-const EErrors = require('../services/errors/enums');
-const info = require('../services/errors/info');
-const mongoose = require('mongoose');
+import CustomError from '../services/errors/customError.js';
+import EErrors from '../services/errors/enums.js';
+import { generateIdErrorInfo } from '../services/errors/info.js';
+import mongoose from 'mongoose';
+import ProductServices from '../services/product.services.js';
 
-const ProductServices = require('../services/product.services');
 const allowedFields = [
   'title',
   'description',
@@ -25,6 +25,7 @@ function getPathUrl(req) {
     return currentPath;
   }
 }
+
 function getQueryParams(req) {
   const p = req.query;
   const limit = parseInt(p.limit) || 10;
@@ -54,6 +55,7 @@ function getQueryParams(req) {
   };
   return params;
 }
+
 function getProductByBody(req) {
   const body = req.body;
   const title = body.title;
@@ -196,6 +198,7 @@ class ProductController {
       console.log(error);
     }
   }
+
   async renderGetProducts(req, res) {
     try {
       const pathUrl = getPathUrl(req);
@@ -234,4 +237,4 @@ class ProductController {
   }
 }
 
-module.exports = ProductController;
+export default ProductController;

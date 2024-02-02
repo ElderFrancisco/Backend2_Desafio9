@@ -1,8 +1,7 @@
-const EErrors = require('../services/errors/enums');
+import EErrors from '../services/errors/enums.js';
 
-module.exports = (error, req, res, next) => {
-  console.log('running');
-  console.log(error.cause);
+export default (error, req, res, next) => {
+  console.error(error);
 
   switch (error.code) {
     case EErrors.INVALID_TYPES_ERROR:
@@ -11,6 +10,7 @@ module.exports = (error, req, res, next) => {
         error: error.name,
         cause: error.cause,
       });
+      break;
     case EErrors.DATABASE_ERROR:
       return res.status(404).send({
         status: 'error',
@@ -21,6 +21,6 @@ module.exports = (error, req, res, next) => {
     default:
       return res
         .status(500)
-        .send({ status: 'error', error: 'unhandled error' });
+        .send({ status: 'error', error: 'Unhandled error' });
   }
 };

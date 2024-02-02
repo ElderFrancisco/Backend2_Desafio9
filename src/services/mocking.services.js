@@ -1,9 +1,9 @@
-const generateProduct = require('../util/generateProduct');
-const ProductsDao = require('../dao/mongo/productsDao');
+import generateProduct from '../util/generateProduct.js';
+import ProductsDao from '../dao/mongo/productsDao.js';
 
 const ProductsDaoManager = new ProductsDao();
 
-class MockingServices {
+export default class MockingServices {
   async mockingProducts(number) {
     try {
       for (let i = 0; i < number; i++) {
@@ -18,5 +18,3 @@ class MockingServices {
     }
   }
 }
-
-module.exports = MockingServices;

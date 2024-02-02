@@ -1,7 +1,4 @@
 import CartServices from '../services/cart.services.js';
-import CustomError from '../services/errors/customError.js';
-import EErrors from '../services/errors/enums.js';
-import info from '../services/errors/info.js';
 
 const CartServicesManager = new CartServices();
 

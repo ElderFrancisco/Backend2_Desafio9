@@ -1,17 +1,16 @@
-const { Router } = require('express');
-const passport = require('passport');
-const ProductController = require('../../controllers/Product.controller');
+import { Router } from 'express';
+import passport from 'passport';
+import ProductController from '../../controllers/Product.controller.js';
 
 const productController = new ProductController();
 
-module.exports = (app) => {
+export default (app) => {
   let router = new Router();
   app.use('/api/products', router);
 
   router.get(
     '/',
     passport.authenticate('jwt', { session: false }),
-
     productController.getProducts,
   );
 
@@ -37,7 +36,6 @@ module.exports = (app) => {
 
   router.delete(
     '/:pid',
-
     passport.authenticate('jwt', { session: false }),
     isAdminMiddleware,
     productController.deleteProductById,
