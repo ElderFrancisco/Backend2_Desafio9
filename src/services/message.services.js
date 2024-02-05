@@ -1,4 +1,4 @@
-const MessageDao = require('../dao/mongo/messageDao');
+import MessageDao from '../dao/mongo/messageDao.js';
 
 const MessageDaoManager = new MessageDao();
 
@@ -21,5 +21,4 @@ class MessageServices {
     }
   }
 }
-
-module.exports = MessageServices;
+export default MessageServices;

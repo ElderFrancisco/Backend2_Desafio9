@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 class HashManager {
   constructor() {}
@@ -12,4 +12,4 @@ class HashManager {
   }
 }
 
-module.exports = HashManager;
+export default HashManager;

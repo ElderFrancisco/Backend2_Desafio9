@@ -4,7 +4,7 @@ class SessionController {
       if (!req.user) {
         return res
           .status(400)
-          .send({ status: error, error: 'credenciales invalidas' });
+          .send({ status: 'error', error: 'credenciales invalidas' });
       }
       return res.cookie('cookieJWT', req.user.token).redirect('/products');
     } catch (error) {
@@ -21,6 +21,7 @@ class SessionController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async githubcallback(req, res) {
     try {
       return res.cookie('cookieJWT', req.user.token).redirect('/products');
@@ -29,6 +30,7 @@ class SessionController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async logout(req, res) {
     try {
       if (req.cookies['cookieJWT']) {
@@ -42,6 +44,7 @@ class SessionController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async current(req, res) {
     try {
       return res.send({ status: 'Success', payload: req.user });
@@ -52,4 +55,4 @@ class SessionController {
   }
 }
 
-module.exports = SessionController;
+export default SessionController;

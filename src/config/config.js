@@ -1,4 +1,6 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const config = {
   port: process.env.PORT,
@@ -6,9 +8,10 @@ const config = {
   clientSecret: process.env.CLIENTSECRET,
   privatekey: process.env.PRIVATEKEY,
 };
+
 const mongo = {
   mongo_url: process.env.MONGO_URL,
   mongo_name: process.env.MONGO_NAME,
 };
 
-module.exports = { config, mongo };
+export { config, mongo };

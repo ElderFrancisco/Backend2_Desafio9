@@ -1,9 +1,10 @@
-const { Router } = require('express');
-const SocketController = require('../controllers/Socket.controller');
-const passport = require('passport');
+import { Router } from 'express';
+import SocketController from '../controllers/Socket.controller.js';
+import passport from 'passport';
+
 const socketController = new SocketController();
 
-module.exports = (app) => {
+export default (app) => {
   let router = new Router();
 
   app.use('/chat', router);
