@@ -5,7 +5,7 @@ export default class UsersDao {
     try {
       return await userModel.create(User);
     } catch (error) {
-      console.log('error on UsersDao createOne:' + error);
+      req.logger.info(error);
     }
   }
 
@@ -13,7 +13,7 @@ export default class UsersDao {
     try {
       return await userModel.findOne(query).lean();
     } catch (error) {
-      console.log('error on UsersDao getOne :' + error);
+      req.logger.info(error);
     }
   }
 }

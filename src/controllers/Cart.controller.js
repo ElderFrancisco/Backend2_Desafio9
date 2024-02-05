@@ -32,16 +32,14 @@ export default class CartController {
       const products = productsBody.filter((e) => e.product && e.quantity);
       const result = await CartServicesManager.createNewCart(products);
       if (!result) {
-        CustomError.createError({
-          name: 'cart creation error',
-          cause: info(result),
-          message: 'error trying to create cart',
-          code: EErrors.INVALID_TYPES_ERROR,
-        });
+        req.logger.info('Cart not found');
+        return res
+          .status(404)
+          .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(201).json(result);
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -52,16 +50,14 @@ export default class CartController {
       const result = await CartServicesManager.getCartById(cid);
 
       if (!result) {
-        new CustomError({
-          name: 'cart getCartById error',
-          cause: info(cid),
-          message: 'error trying to getCartById',
-          code: EErrors.DATABASE_ERROR,
-        });
+        req.logger.info('Cart not found');
+        return res
+          .status(404)
+          .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(200).json({ status: 'Success', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return null;
     }
   }
@@ -73,7 +69,7 @@ export default class CartController {
       const result = await CartServicesManager.getCarts(params, pathUrl);
       return res.status(200).json(result);
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -84,11 +80,14 @@ export default class CartController {
       const pid = req.params.pid;
       const result = await CartServicesManager.updateOneCart(cid, pid);
       if (!result) {
-        return res.status(404).json({ Status: 'Error' });
+        req.logger.info('Cart not found');
+        return res
+          .status(404)
+          .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -99,13 +98,14 @@ export default class CartController {
       const pid = req.params.pid;
       const result = await CartServicesManager.deleteProductCart(cid, pid);
       if (!result) {
+        req.logger.info('Cart not found');
         return res
           .status(404)
-          .json({ status: 'Error', Error: 'Cart Id or Product Id not found' });
+          .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -123,13 +123,14 @@ export default class CartController {
         products,
       );
       if (!result) {
+        req.logger.info('Cart not found');
         return res
           .status(404)
-          .json({ status: 'Error', Error: 'Cart Id or Product Id not found' });
+          .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -139,13 +140,14 @@ export default class CartController {
       const cid = req.params.cid;
       const result = await CartServicesManager.emptyCartById(cid);
       if (!result) {
+        req.logger.info('Cart not found');
         return res
           .status(404)
-          .json({ status: 'Error', Error: 'Cart Id not found' });
+          .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -156,13 +158,14 @@ export default class CartController {
       const result = await CartServicesManager.getCartById(cid);
 
       if (!result) {
+        req.logger.info('Cart not found');
         return res
           .status(404)
-          .json({ status: 'error', error: 'Cart not found' });
+          .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(200).render('cartView', { cart: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return null;
     }
   }
@@ -174,7 +177,7 @@ export default class CartController {
 
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }

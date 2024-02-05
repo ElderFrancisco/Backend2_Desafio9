@@ -8,7 +8,7 @@ class SessionController {
       }
       return res.cookie('cookieJWT', req.user.token).redirect('/products');
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -17,7 +17,7 @@ class SessionController {
     try {
       return res.redirect('/login');
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -26,7 +26,7 @@ class SessionController {
     try {
       return res.cookie('cookieJWT', req.user.token).redirect('/products');
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -40,7 +40,7 @@ class SessionController {
         res.status(400).redirect('/login');
       }
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -49,7 +49,7 @@ class SessionController {
     try {
       return res.send({ status: 'Success', payload: req.user });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }

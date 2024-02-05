@@ -12,7 +12,7 @@ export default (app) => {
       const user = req.user;
       return res.render('index', { user: user });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
     }
   });
 
@@ -23,7 +23,7 @@ export default (app) => {
       }
       return res.render('register', {});
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
     }
   });
 
@@ -34,7 +34,7 @@ export default (app) => {
       }
       return res.render('login', {});
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
     }
   });
 
@@ -45,7 +45,7 @@ export default (app) => {
       }
       return res.render('authfailed', {});
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
     }
   });
 
@@ -56,7 +56,7 @@ export default (app) => {
       try {
         return res.send({ status: 'success', payload: req.user });
       } catch (error) {
-        console.log(error);
+        req.logger.error(error);
       }
     },
   );

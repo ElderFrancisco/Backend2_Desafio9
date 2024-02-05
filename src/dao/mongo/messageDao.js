@@ -4,14 +4,14 @@ class UsersDao {
     try {
       return await messageModel.create(message);
     } catch (error) {
-      console.log('error on UsersDao createOne:' + error);
+      req.logger.info(error);
     }
   }
   async getAll() {
     try {
       return await messageModel.find().sort({ $natural: -1 });
     } catch (error) {
-      console.log('error on UsersDao getOne :' + error);
+      req.logger.info(error);
     }
   }
 }

@@ -10,7 +10,7 @@ export default class ProductsDao {
         lean: true,
       });
     } catch (error) {
-      console.log('error on ProductsDao getAllPaginate');
+      req.logger.info(error);
     }
   }
 
@@ -18,13 +18,17 @@ export default class ProductsDao {
     try {
       return await productModel.create(product);
     } catch (error) {
-      console.log('error on ProductsDao createOne');
+      req.logger.info(error);
     }
   }
 
   async get(query) {
-    const product = await productModel.findOne(query).lean();
-    return product;
+    try {
+      const product = await productModel.findOne(query).lean();
+      return product;
+    } catch (error) {
+      req.logger.info(error);
+    }
   }
 
   async updateOne(query, update) {
@@ -33,7 +37,7 @@ export default class ProductsDao {
         .findOneAndUpdate(query, update, { new: true })
         .lean();
     } catch (error) {
-      console.log('error on ProductsDao updateOne');
+      req.logger.info(error);
     }
   }
 
@@ -41,7 +45,7 @@ export default class ProductsDao {
     try {
       return await productModel.deleteOne(query);
     } catch (error) {
-      console.log('error on ProductsDao deleteOne');
+      req.logger.info(error);
     }
   }
 
@@ -49,7 +53,7 @@ export default class ProductsDao {
     try {
       return await productModel.find().limit(100).sort({ createdAt: -1 });
     } catch (error) {
-      console.log('error on ProductsDao getAll' + error);
+      req.logger.info(error);
     }
   }
 }

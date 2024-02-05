@@ -7,7 +7,7 @@ class MessageServices {
     try {
       return await MessageDaoManager.getAll();
     } catch (error) {
-      console.log('Error on MessageServices, getMessages function: ' + error);
+      req.logger.info(error);
       return error;
     }
   }
@@ -16,7 +16,7 @@ class MessageServices {
     try {
       return await MessageDaoManager.createOne(message);
     } catch (error) {
-      console.log('Error on MessageServices, addMessage function: ' + error);
+      req.logger.info(error);
       return error;
     }
   }

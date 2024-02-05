@@ -9,7 +9,7 @@ export default class MockingController {
       const result = await MockingServicesManager.mockingProducts(number);
       return res.status(201).json({ status: 'OK', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }

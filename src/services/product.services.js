@@ -43,7 +43,7 @@ class ProductServices {
       const result = createResult(productsList, 'success', urlPrev, urlNext);
       return result;
     } catch (error) {
-      console.log('Error on ProductServices, getProducts function: ' + error);
+      req.logger.error(error);
       return error;
     }
   }
@@ -52,7 +52,7 @@ class ProductServices {
     try {
       return await ProductsDaoManager.createOne(product);
     } catch (error) {
-      console.log('Error on ProductServices, createProduct function: ' + error);
+      req.logger.error(error);
       return error;
     }
   }
@@ -62,7 +62,7 @@ class ProductServices {
       const query = { _id: id };
       return await ProductsDaoManager.get(query);
     } catch (error) {
-      console.log('Error on ProductServices, findProduct function: ' + error);
+      req.logger.error(error);
       return null;
     }
   }
@@ -73,9 +73,7 @@ class ProductServices {
 
       return await ProductsDaoManager.updateOne(query, body);
     } catch (error) {
-      console.log(
-        'Error on ProductServices, findByIdAndUpdate function: ' + error,
-      );
+      req.logger.error(error);
       return error;
     }
   }
@@ -86,9 +84,7 @@ class ProductServices {
       query['_id'] = id;
       return await ProductsDaoManager.deleteOne(query);
     } catch (error) {
-      console.log(
-        'Error on ProductServices, findByIdAndDelete function: ' + error,
-      );
+      req.logger.error(error);
       return error;
     }
   }

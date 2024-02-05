@@ -8,6 +8,7 @@ export default (appServer) => {
 
   io.on('connection', async (socket) => {
     console.log('Cliente conectado');
+    logger.error('cliente conectado');
 
     socket.emit('Chat', await messageServices.getMessages());
 

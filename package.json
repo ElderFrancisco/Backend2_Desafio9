@@ -1,5 +1,5 @@
 {
-  "name": "preentrega3",
+  "name": "desafio9",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -28,7 +28,8 @@
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "socket.io": "^4.7.4"
+    "socket.io": "^4.7.4",
+    "winston": "^3.11.0"
   },
   "keywords": [],
   "author": "",

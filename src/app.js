@@ -14,6 +14,7 @@ import { config, mongo } from './config/config.js';
 import compression from 'express-compression';
 import errorHandler from './middlewares/error.js';
 import __dirname from './utils.js';
+import { addLogger } from './util/winston.js';
 
 class Server {
   constructor() {
@@ -76,6 +77,7 @@ class Server {
   }
 
   middlewares() {
+    this.app.use(addLogger);
     this.app.use(errorHandler);
     utilSocket(this.server);
   }

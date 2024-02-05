@@ -5,7 +5,7 @@ export default class CartsDao {
     try {
       return await cartModel.create(cart);
     } catch (error) {
-      console.log('error on CartsDao createOne' + error);
+      req.logger.info(error);
     }
   }
 
@@ -13,7 +13,7 @@ export default class CartsDao {
     try {
       return await cartModel.findOne(query).populate('products.product').lean();
     } catch (error) {
-      console.log('error on CartsDao getOne' + error);
+      req.logger.info(error);
     }
   }
 
@@ -28,7 +28,7 @@ export default class CartsDao {
         },
       );
     } catch (error) {
-      console.log('error on CartsDao getAll' + error);
+      req.logger.info(error);
     }
   }
 
@@ -36,7 +36,7 @@ export default class CartsDao {
     try {
       return await cartModel.findOneAndUpdate(query, update, { new: true });
     } catch (error) {
-      console.log('error on CartsDao getOne' + error);
+      req.logger.info(error);
       return;
     }
   }

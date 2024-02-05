@@ -6,7 +6,7 @@ class UserServices {
     try {
       return await UsersDaoManager.createOne(user);
     } catch (error) {
-      console.log('Error on UserServices, createNewUser function: ' + error);
+      req.logger.error(error);
       return error;
     }
   }
@@ -16,12 +16,12 @@ class UserServices {
       const query = { email: email };
       const user = await UsersDaoManager.getOne(query);
       if (!user) {
-        console.log('nose encontro');
+        req.logger.silly('no found email');
         return null;
       }
       return user;
     } catch (error) {
-      console.log('Error on UserServices, findOneByEmail function: ' + error);
+      req.logger.error(error);
       return error;
     }
   }
@@ -31,7 +31,7 @@ class UserServices {
       const query = { _id: id };
       return await UsersDaoManager.getOne(query);
     } catch (error) {
-      console.log('Error on UserServices, findUserById function: ' + error);
+      req.logger.error(error);
       return error;
     }
   }

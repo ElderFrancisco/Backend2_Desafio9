@@ -1,7 +1,3 @@
-// import CustomError from '../services/errors/custom_error.js';
-// import EErrors from '../services/errors/enums.js';
-// import { generateIdErrorInfo } from '../services/errors/info.js';
-// import mongoose from 'mongoose';
 import ProductServices from '../services/product.services.js';
 
 const allowedFields = [
@@ -89,7 +85,7 @@ class ProductController {
       const result = await ProductServicesManager.getProducts(params, pathUrl);
       return res.status(200).json(result);
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -105,7 +101,7 @@ class ProductController {
         !productBody.code ||
         !productBody.stock
       ) {
-        console.log(
+        req.logger.debug(
           `Por favor complete todos los campos solicitados de ${title}`,
         );
         return res.status(400).json({ error: 'Ingrese todos los campos' });
@@ -116,7 +112,7 @@ class ProductController {
         return res.status(201).json({ status: 'success', payload: NewProduct });
       }
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -126,13 +122,14 @@ class ProductController {
       const Id = req.params.pid;
       const productId = await ProductServicesManager.findProductById(Id);
       if (productId == null) {
+        req.logger.info('Product not found');
         return res
           .status(404)
           .json({ status: 'error', error: 'Product Not Found' });
       }
       return res.status(200).json({ status: 'success', payload: productId });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -143,9 +140,10 @@ class ProductController {
       const body = req.body;
       const productToUpdate = await ProductServicesManager.findProductById(Id);
       if (!productToUpdate) {
+        req.logger.info('Product not found');
         return res
           .status(404)
-          .json({ status: 'error', error: 'Product not found' });
+          .json({ status: 'error', error: 'Product Not Found' });
       }
       const updatedProduct = {};
 
@@ -162,7 +160,8 @@ class ProductController {
       );
       return res.status(201).json({ status: 'success', payload: result });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
+      return res.status(500).json({ status: 'error' });
     }
   }
 
@@ -175,11 +174,13 @@ class ProductController {
           .status(204)
           .json({ status: 'Success', message: 'Product deleted successfully' });
       }
+      req.logger.info('Product not found');
       return res
         .status(404)
-        .json({ status: 'Error', error: 'Product not found' });
+        .json({ status: 'error', error: 'Product Not Found' });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
+      return res.status(500).json({ status: 'error' });
     }
   }
 
@@ -199,7 +200,7 @@ class ProductController {
         .status(200)
         .render('products', { products: productList, user: user });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -215,7 +216,7 @@ class ProductController {
       }
       return res.status(200).render('productView', { product: productId });
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return res.status(500).json({ status: 'error' });
     }
   }

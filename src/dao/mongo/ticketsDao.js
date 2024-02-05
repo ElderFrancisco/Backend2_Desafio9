@@ -5,7 +5,7 @@ export default class TicketsDao {
     try {
       return await ticketmodel.create(ticket);
     } catch (error) {
-      console.log('error on TicketsDao createOne:' + error);
+      req.logger.info(error);
     }
   }
 }

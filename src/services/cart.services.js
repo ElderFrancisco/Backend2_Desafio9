@@ -13,11 +13,6 @@ async function procesarProductos(productsArray) {
   let precioTotal = 0;
   for (const p of productsArray) {
     try {
-      console.log(p.product.title);
-      console.log('stock del producto:');
-      console.log(p.product.stock);
-      console.log('cantidad pedida:');
-      console.log(p.quantity);
       if (p.product.stock >= p.quantity) {
         const query = { _id: p.product._id };
         const newStock = p.product.stock - p.quantity;
@@ -31,7 +26,7 @@ async function procesarProductos(productsArray) {
 
       // Tu lógica con el producto obtenido de la base de datos
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
     }
   }
   return {
@@ -74,7 +69,7 @@ export default class CartServices {
       };
       return await CartsDaoManager.createOne(cart);
     } catch (error) {
-      console.log('Error on CartServices, createNewCart function: ' + error);
+      req.logger.warn(error);
       return error;
     }
   }
@@ -96,7 +91,7 @@ export default class CartServices {
       const result = createResult(cartList, 'success', urlPrev, urlNext);
       return result;
     } catch (error) {
-      console.log('Error on ProductServices, getProducts function: ' + error);
+      req.logger.warn(error);
       return error;
     }
   }
@@ -118,7 +113,7 @@ export default class CartServices {
       const result = CartsDaoManager.updateOne(query, cartToUpdate);
       return result;
     } catch (error) {
-      console.log('Error on ProductServices, getProducts function: ' + error);
+      req.logger.warn(error);
       return error;
     }
   }
@@ -142,7 +137,7 @@ export default class CartServices {
       const result = CartsDaoManager.updateOne(query, cartToUpdate);
       return result;
     } catch (error) {
-      console.log('Error on ProductServices, getProducts function: ' + error);
+      req.logger.warn(error);
       return error;
     }
   }
@@ -172,7 +167,7 @@ export default class CartServices {
       const result = CartsDaoManager.updateOne(query, cartToUpdate);
       return result;
     } catch (error) {
-      console.log('Error on ProductServices, getProducts function: ' + error);
+      req.logger.warn(error);
       return error;
     }
   }
@@ -187,7 +182,7 @@ export default class CartServices {
       const result = CartsDaoManager.updateOne(query, cartToUpdate);
       return result;
     } catch (error) {
-      console.log('Error on ProductServices, getProducts function: ' + error);
+      req.logger.warn(error);
       return error;
     }
   }
@@ -202,7 +197,6 @@ export default class CartServices {
       const cartUser = await CartsDaoManager.getOne(query2);
       const productsArray = cartUser.products;
       const proceso = await procesarProductos(productsArray);
-      console.log(proceso);
       if (proceso.failed_products.length > 0) {
         const productosFallidos = productsArray
           .filter((p) => proceso.failed_products.includes(p.product._id))
@@ -224,7 +218,7 @@ export default class CartServices {
       const result = ticketsDaoManager.createOne(ticket);
       return result;
     } catch (error) {
-      console.log('Error on ProductServices, getProducts function: ' + error);
+      req.logger.warn(error);
       return error;
     }
   }

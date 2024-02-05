@@ -13,7 +13,7 @@ export default class MockingServices {
       const productList = await ProductsDaoManager.getAll();
       return productList;
     } catch (error) {
-      console.log('Error on MessageServices, getMessages function: ' + error);
+      req.logger.info(error);
       return error;
     }
   }

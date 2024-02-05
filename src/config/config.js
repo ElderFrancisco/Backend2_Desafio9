@@ -7,6 +7,8 @@ const config = {
   clientID: process.env.CLIENTID,
   clientSecret: process.env.CLIENTSECRET,
   privatekey: process.env.PRIVATEKEY,
+  logger_console_level: process.env.LOGGER_CONSOLE_LEVEL,
+  logger_file_level: process.env.LOGGER_FILE_LEVEL,
 };
 
 const mongo = {

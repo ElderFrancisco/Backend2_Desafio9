@@ -31,7 +31,7 @@ const initializePassport = () => {
         try {
           const user = await usersServices.findOneByEmail(username);
           if (user) {
-            console.log('user already existst');
+            req.logger.info('user already existst');
             return done(null, false);
           }
           const cartId = await CartController.createNewCart(req.body.products);
@@ -46,7 +46,7 @@ const initializePassport = () => {
           const result = await usersServices.createNewUser(newUser);
           return done(null, result);
         } catch (error) {
-          console.log(error);
+          req.logger.error(error);
         }
       },
     ),
@@ -63,7 +63,7 @@ const initializePassport = () => {
         try {
           const user = await usersServices.findOneByEmail(username);
           if (!user) {
-            console.log('user doesnt exist');
+            req.logger.debug('user doesnt exist');
             return done(null, false);
           }
           if (HashController.isValidPassword(user, password) == false)
@@ -73,7 +73,7 @@ const initializePassport = () => {
           user.token = token;
           return done(null, user);
         } catch (err) {
-          console.log(err);
+          req.logger.warn(err);
           return done(null, false);
         }
       },
@@ -105,12 +105,11 @@ const initializePassport = () => {
             password: HashController.createHash(''),
             cartId: cartId._id,
           };
-          console.log(newUser);
           const result = await usersServices.createNewUser(newUser);
 
           return done(null, result);
         } catch (error) {
-          console.log('error al iniciar sesion con gituhb' + error);
+          req.logger.error('error al iniciar sesion con gituhb' + error);
         }
       },
     ),
@@ -127,7 +126,7 @@ const initializePassport = () => {
         try {
           return done(null, jwt_payload);
         } catch (error) {
-          console.log(error);
+          req.logger.error(error);
           return done(null, false);
         }
       },
