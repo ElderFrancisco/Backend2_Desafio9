@@ -1,4 +1,4 @@
-const CartServices = require('../services/cart.services');
+import CartServices from '../services/cart.services.js';
 
 const CartServicesManager = new CartServices();
 
@@ -23,7 +23,7 @@ function getPathUrl(req) {
   }
 }
 
-class CartController {
+export default class CartController {
   async createNewCart(req, res) {
     try {
       const productsBody = Array.isArray(req.body.products)
@@ -31,7 +31,14 @@ class CartController {
         : [];
       const products = productsBody.filter((e) => e.product && e.quantity);
       const result = await CartServicesManager.createNewCart(products);
-      if (!result) return res.status(400).json({ status: 'error' });
+      if (!result) {
+        CustomError.createError({
+          name: 'cart creation error',
+          cause: info(result),
+          message: 'error trying to create cart',
+          code: EErrors.INVALID_TYPES_ERROR,
+        });
+      }
       return res.status(201).json(result);
     } catch (error) {
       console.log(error);
@@ -45,9 +52,12 @@ class CartController {
       const result = await CartServicesManager.getCartById(cid);
 
       if (!result) {
-        return res
-          .status(404)
-          .json({ status: 'error', error: 'Cart not found' });
+        new CustomError({
+          name: 'cart getCartById error',
+          cause: info(cid),
+          message: 'error trying to getCartById',
+          code: EErrors.DATABASE_ERROR,
+        });
       }
       return res.status(200).json({ status: 'Success', payload: result });
     } catch (error) {
@@ -55,6 +65,7 @@ class CartController {
       return null;
     }
   }
+
   async getCarts(req, res) {
     try {
       const pathUrl = getPathUrl(req);
@@ -66,6 +77,7 @@ class CartController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async updateOneCartByIdProduct(req, res) {
     try {
       const cid = req.params.cid;
@@ -80,6 +92,7 @@ class CartController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async deleteProductById(req, res) {
     try {
       const cid = req.params.cid;
@@ -96,6 +109,7 @@ class CartController {
       return res.status(500).json({ status: 'error' });
     }
   }
+
   async updateManyProducts(req, res) {
     try {
       const cid = req.params.cid;
@@ -152,6 +166,7 @@ class CartController {
       return null;
     }
   }
+
   async purchaseCartById(req, res) {
     try {
       const cid = req.params.cid;
@@ -164,5 +179,3 @@ class CartController {
     }
   }
 }
-
-module.exports = CartController;

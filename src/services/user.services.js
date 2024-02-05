@@ -1,5 +1,4 @@
-const { query } = require('express');
-const UsersDao = require('../dao/mongo/usersDao');
+import UsersDao from '../dao/mongo/usersDao.js';
 const UsersDaoManager = new UsersDao();
 
 class UserServices {
@@ -38,4 +37,4 @@ class UserServices {
   }
 }
 
-module.exports = UserServices;
+export default UserServices;

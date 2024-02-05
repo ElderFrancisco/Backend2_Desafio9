@@ -1,5 +1,6 @@
-const productModel = require('./models/products.model');
-class ProductsDao {
+import productModel from './models/products.model.js';
+
+export default class ProductsDao {
   async getAllPaginate(params) {
     try {
       return await productModel.paginate(params.query, {
@@ -12,6 +13,7 @@ class ProductsDao {
       console.log('error on ProductsDao getAllPaginate');
     }
   }
+
   async createOne(product) {
     try {
       return await productModel.create(product);
@@ -19,12 +21,10 @@ class ProductsDao {
       console.log('error on ProductsDao createOne');
     }
   }
+
   async get(query) {
-    try {
-      return await productModel.findOne(query).lean();
-    } catch (error) {
-      console.log('error on ProductsDao get');
-    }
+    const product = await productModel.findOne(query).lean();
+    return product;
   }
 
   async updateOne(query, update) {
@@ -36,6 +36,7 @@ class ProductsDao {
       console.log('error on ProductsDao updateOne');
     }
   }
+
   async deleteOne(query) {
     try {
       return await productModel.deleteOne(query);
@@ -43,6 +44,7 @@ class ProductsDao {
       console.log('error on ProductsDao deleteOne');
     }
   }
+
   async getAll() {
     try {
       return await productModel.find().limit(100).sort({ createdAt: -1 });
@@ -51,4 +53,3 @@ class ProductsDao {
     }
   }
 }
-module.exports = ProductsDao;

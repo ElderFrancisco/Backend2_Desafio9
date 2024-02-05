@@ -1,5 +1,6 @@
-const cartModel = require('./models/carts.model');
-class CartsDao {
+import cartModel from './models/carts.model.js';
+
+export default class CartsDao {
   async createOne(cart) {
     try {
       return await cartModel.create(cart);
@@ -7,6 +8,7 @@ class CartsDao {
       console.log('error on CartsDao createOne' + error);
     }
   }
+
   async getOne(query) {
     try {
       return await cartModel.findOne(query).populate('products.product').lean();
@@ -14,6 +16,7 @@ class CartsDao {
       console.log('error on CartsDao getOne' + error);
     }
   }
+
   async getAll(params) {
     try {
       return await cartModel.paginate(
@@ -38,4 +41,3 @@ class CartsDao {
     }
   }
 }
-module.exports = CartsDao;

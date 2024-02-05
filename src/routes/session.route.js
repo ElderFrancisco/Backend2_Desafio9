@@ -1,8 +1,8 @@
-const { Router } = require('express');
-const passport = require('passport');
-const { accessPublicWithoutAuth, authToHome } = require('../util/jwt');
+import { Router } from 'express';
+import passport from 'passport';
+import { accessPublicWithoutAuth, authToHome } from '../util/jwt.js';
 
-module.exports = (app) => {
+export default (app) => {
   let router = new Router();
 
   app.use('/', router);

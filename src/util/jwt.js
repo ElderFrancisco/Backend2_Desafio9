@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const { config } = require('../config/config');
+import jwt from 'jsonwebtoken';
+import { config } from '../config/config.js';
 
 const generateToken = (user) => {
   const filteredUser = {
@@ -47,4 +47,5 @@ const authToHome = (req, res, next) => {
     return next();
   });
 };
-module.exports = { generateToken, accessPublicWithoutAuth, authToHome };
+
+export { generateToken, accessPublicWithoutAuth, authToHome };

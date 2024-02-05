@@ -1,21 +1,24 @@
-const webSocketRoute = require('./websocket.route');
-const productsRoute = require('./products.route');
-const cartsRoute = require('./cart.route');
-const sessionRoute = require('./session.route');
-const mockingRoute = require('./mocking.route');
+import webSocketRoute from './websocket.route.js';
+import productsRoute from './products.route.js';
+import cartsRoute from './cart.route.js';
+import sessionRoute from './session.route.js';
+import mockingRoute from './mocking.route.js';
 
-const cartsApi = require('./api/carts.api');
-const productsApi = require('./api/products.api');
-const sessionsApi = require('./api/sessions.api');
+import cartsApi from './api/carts.api.js';
+import productsApi from './api/products.api.js';
+import sessionsApi from './api/sessions.api.js';
 
-module.exports = (app) => {
+const setupRoutes = (app) => {
   webSocketRoute(app);
   productsRoute(app);
   cartsRoute(app);
   sessionRoute(app);
   mockingRoute(app);
-  //api
+
+  // API
   cartsApi(app);
   productsApi(app);
   sessionsApi(app);
 };
+
+export default setupRoutes;

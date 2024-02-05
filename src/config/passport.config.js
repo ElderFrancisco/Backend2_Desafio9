@@ -1,29 +1,23 @@
-const passport = require('passport');
-const local = require('passport-local');
-const github = require('passport-github2');
-const HashManager = require('../util/hash');
-
-const passportJWT = require('passport-jwt');
-const { generateToken } = require('../util/jwt');
-//const CartManagerDb = require('../dao/managersDb/CartManagerDb');
-const { config } = require('./config');
-
-const CartServices = require('../services/cart.services');
-const CartController = new CartServices();
-
-const UsersServices = require('../services/user.services');
-const usersServices = new UsersServices();
+import passport from 'passport';
+import local from 'passport-local';
+import GitHubStrategy from 'passport-github2';
+import HashManager from '../util/hash.js';
+import passportJWT from 'passport-jwt';
+import { generateToken } from '../util/jwt.js';
+import { config } from './config.js';
+import CartServices from '../services/cart.services.js';
+import UsersServices from '../services/user.services.js';
 
 const JWTStrategy = passportJWT.Strategy;
-
+const CartController = new CartServices();
 const HashController = new HashManager();
+const usersServices = new UsersServices();
 
 const extractCookie = (req) => {
   return req.cookies ? req.cookies['cookieJWT'] : null;
 };
 
 const LocalStrategy = local.Strategy;
-const GithubStrategy = github.Strategy;
 const initializePassport = () => {
   passport.use(
     'register',
@@ -87,7 +81,7 @@ const initializePassport = () => {
   );
   passport.use(
     'github',
-    new GithubStrategy(
+    new GitHubStrategy(
       {
         clientID: config.clientID,
         clientSecret: config.clientSecret,
@@ -150,4 +144,4 @@ const initializePassport = () => {
   });
 };
 
-module.exports = initializePassport();
+export default initializePassport;

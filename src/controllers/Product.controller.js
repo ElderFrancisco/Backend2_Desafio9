@@ -1,4 +1,9 @@
-const ProductServices = require('../services/product.services');
+// import CustomError from '../services/errors/custom_error.js';
+// import EErrors from '../services/errors/enums.js';
+// import { generateIdErrorInfo } from '../services/errors/info.js';
+// import mongoose from 'mongoose';
+import ProductServices from '../services/product.services.js';
+
 const allowedFields = [
   'title',
   'description',
@@ -20,6 +25,7 @@ function getPathUrl(req) {
     return currentPath;
   }
 }
+
 function getQueryParams(req) {
   const p = req.query;
   const limit = parseInt(p.limit) || 10;
@@ -49,6 +55,7 @@ function getQueryParams(req) {
   };
   return params;
 }
+
 function getProductByBody(req) {
   const body = req.body;
   const title = body.title;
@@ -121,7 +128,7 @@ class ProductController {
       if (productId == null) {
         return res
           .status(404)
-          .json({ status: 'error', error: 'product not found' });
+          .json({ status: 'error', error: 'Product Not Found' });
       }
       return res.status(200).json({ status: 'success', payload: productId });
     } catch (error) {
@@ -175,6 +182,7 @@ class ProductController {
       console.log(error);
     }
   }
+
   async renderGetProducts(req, res) {
     try {
       const pathUrl = getPathUrl(req);
@@ -213,4 +221,4 @@ class ProductController {
   }
 }
 
-module.exports = ProductController;
+export default ProductController;

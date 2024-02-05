@@ -1,7 +1,7 @@
-const CartsDao = require('../dao/mongo/cartsDao');
-const UsersDao = require('../dao/mongo/usersDao');
-const ProductsDao = require('../dao/mongo/productsDao');
-const ticketsDao = require('../dao/mongo/ticketsDao');
+import CartsDao from '../dao/mongo/cartsDao.js';
+import UsersDao from '../dao/mongo/usersDao.js';
+import ProductsDao from '../dao/mongo/productsDao.js';
+import ticketsDao from '../dao/mongo/ticketsDao.js';
 
 const CartsDaoManager = new CartsDao();
 const UsersDaoManager = new UsersDao();
@@ -66,7 +66,7 @@ function createResult(doc, state, urlPrev, urlNext) {
   return result;
 }
 
-class CartServices {
+export default class CartServices {
   async createNewCart(products) {
     try {
       const cart = {
@@ -78,15 +78,16 @@ class CartServices {
       return error;
     }
   }
+
   async getCartById(cid) {
     try {
       const query = { _id: cid };
       return await CartsDaoManager.getOne(query);
     } catch (error) {
-      console.log('Error on CartServices, createNewCart function: ' + error);
-      return error;
+      return null;
     }
   }
+
   async getCarts(params, pathUrl) {
     try {
       const urlPrev = getUrl(params, pathUrl, -1);
@@ -228,4 +229,3 @@ class CartServices {
     }
   }
 }
-module.exports = CartServices;

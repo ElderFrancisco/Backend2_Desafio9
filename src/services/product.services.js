@@ -1,9 +1,7 @@
-const ProductsDao = require('../dao/mongo/productsDao');
+import ProductsDao from '../dao/mongo/productsDao.js';
 
 const ProductsDaoManager = new ProductsDao();
 
-//
-//
 function getUrl(params, path, number) {
   const nextPage = parseInt(params.page) + number;
 
@@ -65,7 +63,7 @@ class ProductServices {
       return await ProductsDaoManager.get(query);
     } catch (error) {
       console.log('Error on ProductServices, findProduct function: ' + error);
-      return error;
+      return null;
     }
   }
 
@@ -96,4 +94,4 @@ class ProductServices {
   }
 }
 
-module.exports = ProductServices;
+export default ProductServices;

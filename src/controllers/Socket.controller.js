@@ -9,4 +9,4 @@ class SocketController {
   }
 }
 
-module.exports = SocketController;
+export default SocketController;

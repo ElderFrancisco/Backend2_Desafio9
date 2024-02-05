@@ -1,10 +1,10 @@
-const socketIO = require('socket.io');
+import { Server } from 'socket.io';
+import MessageServices from '../services/message.services.js';
 
-const MessageServices = require('../services/message.services');
 const messageServices = new MessageServices();
 
-module.exports = (server) => {
-  const io = socketIO(server);
+export default (appServer) => {
+  const io = new Server();
 
   io.on('connection', async (socket) => {
     console.log('Cliente conectado');

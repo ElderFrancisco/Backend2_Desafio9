@@ -1,9 +1,9 @@
-const { Router } = require('express');
-const MockingController = require('../controllers/mocking.controller.js');
+import { Router } from 'express';
+import MockingController from '../controllers/mocking.controller.js';
 
 const mockingController = new MockingController();
 
-module.exports = (app) => {
+export default (app) => {
   let router = new Router();
 
   app.use('/mockingproducts', router);

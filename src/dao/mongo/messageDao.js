@@ -1,4 +1,4 @@
-const messageModel = require('./models/messages.model');
+import messageModel from './models/messages.model.js';
 class UsersDao {
   async createOne(message) {
     try {
@@ -15,4 +15,4 @@ class UsersDao {
     }
   }
 }
-module.exports = UsersDao;
+export default UsersDao;
