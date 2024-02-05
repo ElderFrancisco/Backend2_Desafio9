@@ -1,7 +1,7 @@
-import CustomError from '../services/errors/customError.js';
-import EErrors from '../services/errors/enums.js';
-import { generateIdErrorInfo } from '../services/errors/info.js';
-import mongoose from 'mongoose';
+// import CustomError from '../services/errors/custom_error.js';
+// import EErrors from '../services/errors/enums.js';
+// import { generateIdErrorInfo } from '../services/errors/info.js';
+// import mongoose from 'mongoose';
 import ProductServices from '../services/product.services.js';
 
 const allowedFields = [
@@ -124,27 +124,11 @@ class ProductController {
   async getProductById(req, res) {
     try {
       const Id = req.params.pid;
-      if (!mongoose.Types.ObjectId.isValid(Id)) {
-        console.log('aaaaaaaa');
-
-        CustomError.CreateError({
-          name: 'Invalid  Types',
-          cause: 'causa',
-          message: 'Id debe ser tipo objectID',
-          code: EErrors.INVALID_TYPES_ERROR,
-        });
-      }
       const productId = await ProductServicesManager.findProductById(Id);
       if (productId == null) {
-        /* CustomError.CreateError({
-          name: 'Product not found',
-          cause: info(Id),
-          message: 'Error Tryng to get Product',
-          code: EErrors.DATABASE_ERROR,
-        });*/
-        const error = new Error('hola');
-        throw error;
-        return;
+        return res
+          .status(404)
+          .json({ status: 'error', error: 'Product Not Found' });
       }
       return res.status(200).json({ status: 'success', payload: productId });
     } catch (error) {

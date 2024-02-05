@@ -4,7 +4,6 @@ import GitHubStrategy from 'passport-github2';
 import HashManager from '../util/hash.js';
 import passportJWT from 'passport-jwt';
 import { generateToken } from '../util/jwt.js';
-// import CartManagerDb from '../dao/managersDb/CartManagerDb';
 import { config } from './config.js';
 import CartServices from '../services/cart.services.js';
 import UsersServices from '../services/user.services.js';

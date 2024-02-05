@@ -24,7 +24,6 @@ export default class ProductsDao {
 
   async get(query) {
     const product = await productModel.findOne(query).lean();
-    console.log('p: ' + product);
     return product;
   }
 

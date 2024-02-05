@@ -23,7 +23,7 @@ export default (app) => {
 
   router.get(
     '/:pid',
-    passport.authenticate('jwt', { session: false }),
+    // passport.authenticate('jwt', { session: false }),
     productController.getProductById,
   );
 
