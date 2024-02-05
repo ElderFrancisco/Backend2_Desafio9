@@ -13,6 +13,7 @@ import cookieParser from 'cookie-parser';
 import { config, mongo } from './config/config.js';
 import compression from 'express-compression';
 import errorHandler from './middlewares/error.js';
+import __dirname from './utils.js';
 
 class Server {
   constructor() {
@@ -23,6 +24,7 @@ class Server {
       this.server = http.createServer(this.app);
       this.connect();
       this.middlewares();
+
       this.routes();
 
       Server.instance = this;
@@ -30,7 +32,6 @@ class Server {
 
     return Server.instance;
   }
-
   settings() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
@@ -60,6 +61,7 @@ class Server {
         brotli: { enabled: true, zlib: {} },
       }),
     );
+    initializePassport();
   }
 
   connect() {

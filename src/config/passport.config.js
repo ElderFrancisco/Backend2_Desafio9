@@ -1,6 +1,6 @@
 import passport from 'passport';
 import local from 'passport-local';
-import github from 'passport-github2';
+import GitHubStrategy from 'passport-github2';
 import HashManager from '../util/hash.js';
 import passportJWT from 'passport-jwt';
 import { generateToken } from '../util/jwt.js';
@@ -19,7 +19,6 @@ const extractCookie = (req) => {
 };
 
 const LocalStrategy = local.Strategy;
-const GithubStrategy = github.Strategy;
 const initializePassport = () => {
   passport.use(
     'register',
@@ -83,7 +82,7 @@ const initializePassport = () => {
   );
   passport.use(
     'github',
-    new GithubStrategy(
+    new GitHubStrategy(
       {
         clientID: config.clientID,
         clientSecret: config.clientSecret,
