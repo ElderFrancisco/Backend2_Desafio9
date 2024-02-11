@@ -1,4 +1,4 @@
-import MessageDao from '../dao/mongo/messageDao.js';
+import MessageDao from '../DAO/mongo/message.mongo.js';
 
 const MessageDaoManager = new MessageDao();
 

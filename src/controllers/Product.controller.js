@@ -93,7 +93,7 @@ class ProductController {
 
   async addProduct(req, res) {
     try {
-      const productBody = getProductByBody(req);
+      // const productBody = getProductByBody(req);
       // if (
       //   !productBody.title ||
       //   !productBody.description ||
@@ -102,14 +102,15 @@ class ProductController {
       //   !productBody.code ||
       //   !productBody.stock
       // ) {
-      //   req.logger.debug(
+      //   req.logger.info(
       //     `Por favor complete todos los campos solicitados de ${title}`,
       //   );
       //   return res.status(400).json({ error: 'Ingrese todos los campos' });
       // } else {
-      const NewProduct = await ProductService.create(productBody);
+      const NewProduct = await ProductService.create(req.body);
+      console.log(NewProduct);
       return res.status(201).json({ status: 'success', payload: NewProduct });
-      //      }
+      //}
     } catch (error) {
       req.logger.error(error);
       return res.status(500).json({ status: 'error' });
@@ -137,26 +138,16 @@ class ProductController {
     try {
       const Id = req.params.pid;
       const body = req.body;
-      const productToUpdate = await ProductServicesManager.findProductById(Id);
+      const productToUpdate = await ProductService.getByID(Id);
       if (!productToUpdate) {
         req.logger.info('Product not found');
         return res
           .status(404)
           .json({ status: 'error', error: 'Product Not Found' });
       }
-      const updatedProduct = {};
-
-      allowedFields.forEach((campo) => {
-        if (campo !== undefined) {
-          updatedProduct[campo] = body[campo];
-        } else {
-          updatedProduct[campo] = productToUpdate[campo];
-        }
-      });
-      const result = await ProductServicesManager.findByIdAndUpdate(
-        Id,
-        updatedProduct,
-      );
+      body['_id'] = Id;
+      await ProductService.update(body);
+      const result = await ProductService.getByID(Id);
       return res.status(201).json({ status: 'success', payload: result });
     } catch (error) {
       req.logger.error(error);
@@ -167,7 +158,11 @@ class ProductController {
   async deleteProductById(req, res) {
     try {
       const Id = req.params.pid;
-      const productDelete = await ProductServicesManager.findByIdAndDelete(Id);
+
+      const result = await ProductService.getByID(Id);
+      //Si el user es owner del product o es admin, elimine
+
+      const productDelete = await ProductService.deleteByID(Id);
       if (productDelete.deletedCount === 1) {
         return res
           .status(204)
@@ -187,7 +182,7 @@ class ProductController {
     try {
       const pathUrl = getPathUrl(req);
       const params = getQueryParams(req);
-      const { user } = req.user;
+      //const { user } = req.user;
       const productList = await ProductServicesManager.getProducts(
         params,
         pathUrl,
@@ -197,7 +192,7 @@ class ProductController {
       }
       return res
         .status(200)
-        .render('products', { products: productList, user: user });
+        .render('products', { products: productList, user: {} });
     } catch (error) {
       req.logger.error(error);
       return res.status(500).json({ status: 'error' });
@@ -207,15 +202,15 @@ class ProductController {
   async renderGetProductById(req, res) {
     try {
       const Id = req.params.pid;
-      const productId = await ProductServicesManager.findProductById(Id);
-      if (productId == null) {
+      const product = await ProductService.getByID(Id);
+      if (product == null) {
         return res
           .status(404)
           .json({ status: 'error', error: 'product not found' });
       }
-      return res.status(200).render('productView', { product: productId });
+      return res.status(200).render('productView', { product: product });
     } catch (error) {
-      req.logger.error(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }

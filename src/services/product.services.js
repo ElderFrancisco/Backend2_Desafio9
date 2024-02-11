@@ -1,7 +1,7 @@
-import ProductsDao from '../DAO/mongo/products.mongo.js';
+// import ProductsDao from '../DAO/mongo/products.mongo.js';
 import { ProductService } from '../repository/index.js';
 
-const ProductsDaoManager = new ProductsDao();
+// const ProductsDaoManager = new ProductsDao();
 
 function getUrl(params, path, number) {
   const nextPage = parseInt(params.page) + number;
@@ -50,14 +50,14 @@ class ProductServices {
     }
   }
 
-  async createProduct(product) {
-    try {
-      return await ProductsDaoManager.createOne(product);
-    } catch (error) {
-      req.logger.error(error);
-      return error;
-    }
-  }
+  // async createProduct(product) {
+  //   try {
+  //     return await ProductsDaoManager.createOne(product);
+  //   } catch (error) {
+  //     req.logger.error(error);
+  //     return error;
+  //   }
+  // }
 
   // async findProductById(id) {
   //   try {
@@ -70,27 +70,27 @@ class ProductServices {
   //   }
   // }
 
-  async findByIdAndUpdate(id, body) {
-    try {
-      const query = { _id: id };
+  // async findByIdAndUpdate(id, body) {
+  //   try {
+  //     const query = { _id: id };
 
-      return await ProductsDaoManager.updateOne(query, body);
-    } catch (error) {
-      req.logger.error(error);
-      return error;
-    }
-  }
+  //     return await ProductsDaoManager.updateOne(query, body);
+  //   } catch (error) {
+  //     req.logger.error(error);
+  //     return error;
+  //   }
+  // }
 
-  async findByIdAndDelete(id) {
-    try {
-      const query = {};
-      query['_id'] = id;
-      return await ProductsDaoManager.deleteOne(query);
-    } catch (error) {
-      req.logger.error(error);
-      return error;
-    }
-  }
+  // async findByIdAndDelete(id) {
+  //   try {
+  //     const query = {};
+  //     query['_id'] = id;
+  //     return await ProductsDaoManager.deleteOne(query);
+  //   } catch (error) {
+  //     req.logger.error(error);
+  //     return error;
+  //   }
+  // }
 }
 
 export default ProductServices;

@@ -10,20 +10,20 @@ export default (app) => {
 
   router.get(
     '/',
-    //passport.authenticate('jwt', { session: false }),
+    passport.authenticate('jwt', { session: false }),
     productController.getProducts,
   );
 
   router.post(
     '/',
-    // passport.authenticate('jwt', { session: false }),
-    // isAdminMiddleware,
+    passport.authenticate('jwt', { session: false }),
+    isAdminMiddleware,
     productController.addProduct,
   );
 
   router.get(
     '/:pid',
-    // passport.authenticate('jwt', { session: false }),
+    passport.authenticate('jwt', { session: false }),
     productController.getProductById,
   );
 

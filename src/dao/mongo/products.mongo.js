@@ -68,7 +68,7 @@ export default class Product {
     return productModel.create(data);
   };
   getByID = async (id) => {
-    return productModel.findById(id);
+    return productModel.findById(id).lean();
   };
   update = async (data) => {
     return productModel.updateOne({ _id: data._id }, data);
@@ -80,5 +80,8 @@ export default class Product {
       sort: params.sort,
       lean: true,
     });
+  };
+  deleteByID = async (id) => {
+    return productModel.deleteOne({ _id: id });
   };
 }

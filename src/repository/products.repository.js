@@ -16,8 +16,14 @@ export default class ProductRepository {
   };
   create = async (data) => {
     const dataToInsert = new ProductCreateDTO(data);
-    console.log(dataToInsert);
     return this.dao.create(dataToInsert);
+  };
+  update = async (data) => {
+    const dataToInsert = new ProductCreateDTO(data);
+    return this.dao.update(dataToInsert);
+  };
+  deleteByID = async (id) => {
+    return this.dao.deleteByID(id);
   };
 
   //   addTicket = async (userID, ticketID) => {
