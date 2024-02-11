@@ -5,7 +5,7 @@ import productsRoute from './products.route.js';
 // import mockingRoute from './mocking.route.js';
 // import loggerRoute from './logger.route.js';
 
-// import cartsApi from './api/carts.api.js';
+import cartsApi from './api/carts.api.js';
 import productsApi from './api/products.api.js';
 // import sessionsApi from './api/sessions.api.js';
 
@@ -18,9 +18,12 @@ const setupRoutes = (app) => {
   loggerRoute(app);
 
   // API
-  cartsApi(app);*/
-  productsApi(app);
+  */
+  cartsApi(app);
+  //productsApi(app);
   // sessionsApi(app);
+
+  app.use('/api/products', productsApi);
 };
 
 export default setupRoutes;

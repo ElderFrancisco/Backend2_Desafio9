@@ -1,8 +1,10 @@
-import ProductController from '../controllers/Product.controller.js';
+import {
+  renderGetProducts,
+  renderGetProductById,
+} from '../controllers/Product.controller.js';
+
 import { Router } from 'express';
 import passport from 'passport';
-
-const productController = new ProductController();
 
 export default (app) => {
   let router = new Router();
@@ -14,7 +16,7 @@ export default (app) => {
       session: false,
       failureRedirect: '/login',
     }),
-    productController.renderGetProducts,
+    renderGetProducts,
   );
 
   router.get(
@@ -23,6 +25,6 @@ export default (app) => {
       session: false,
       failureRedirect: '/login',
     }),
-    productController.renderGetProductById,
+    renderGetProductById,
   );
 };

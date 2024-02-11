@@ -71,7 +71,9 @@ export default class Product {
     return productModel.findById(id).lean();
   };
   update = async (data) => {
-    return productModel.updateOne({ _id: data._id }, data);
+    return productModel.findOneAndUpdate({ _id: data._id }, data, {
+      new: true,
+    });
   };
   paginate = async (params) => {
     return productModel.paginate(params.query, {

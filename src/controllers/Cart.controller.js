@@ -1,4 +1,5 @@
 import CartServices from '../services/cart.services.js';
+import { CartService } from '../repository/index.js';
 
 const CartServicesManager = new CartServices();
 
@@ -29,8 +30,29 @@ export default class CartController {
       const productsBody = Array.isArray(req.body.products)
         ? req.body.products
         : [];
-      const products = productsBody.filter((e) => e.product && e.quantity);
-      const result = await CartServicesManager.createNewCart(products);
+      const productMap = new Map();
+      productsBody.forEach((product) => {
+        if (product.product && product.quantity) {
+          const { product: productId, quantity } = product;
+          if (productMap.has(productId)) {
+            // Si el producto ya está en el mapa, agregar la cantidad
+            productMap.set(productId, productMap.get(productId) + quantity);
+          } else {
+            // Si es la primera vez que se encuentra el producto, agregarlo al mapa
+            productMap.set(productId, quantity);
+          }
+        }
+      });
+      const products = [...productMap].map(([product, quantity]) => ({
+        product,
+        quantity,
+      }));
+
+      const cart = {
+        products,
+      };
+
+      const result = await CartService.create(cart);
       if (!result) {
         req.logger.info('Cart not found');
         return res
@@ -39,7 +61,7 @@ export default class CartController {
       }
       return res.status(201).json(result);
     } catch (error) {
-      req.logger.error(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -47,8 +69,7 @@ export default class CartController {
   async getCartById(req, res) {
     try {
       const cid = req.params.cid;
-      const result = await CartServicesManager.getCartById(cid);
-
+      const result = await CartService.getByID(cid);
       if (!result) {
         req.logger.info('Cart not found');
         return res
@@ -105,7 +126,7 @@ export default class CartController {
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      req.logger.error(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
@@ -116,7 +137,23 @@ export default class CartController {
       const productsBody = Array.isArray(req.body.products)
         ? req.body.products
         : [];
-      const products = productsBody.filter((e) => e.product && e.quantity);
+      const productMap = new Map();
+      productsBody.forEach((product) => {
+        if (product.product && product.quantity) {
+          const { product: productId, quantity } = product;
+          if (productMap.has(productId)) {
+            // Si el producto ya está en el mapa, agregar la cantidad
+            productMap.set(productId, productMap.get(productId) + quantity);
+          } else {
+            // Si es la primera vez que se encuentra el producto, agregarlo al mapa
+            productMap.set(productId, quantity);
+          }
+        }
+      });
+      const products = [...productMap].map(([product, quantity]) => ({
+        product,
+        quantity,
+      }));
 
       const result = await CartServicesManager.updateManyProducts(
         cid,
@@ -138,7 +175,7 @@ export default class CartController {
   async emptyCartById(req, res) {
     try {
       const cid = req.params.cid;
-      const result = await CartServicesManager.emptyCartById(cid);
+      const result = await CartService.emptyByID(cid);
       if (!result) {
         req.logger.info('Cart not found');
         return res
@@ -147,7 +184,7 @@ export default class CartController {
       }
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      req.logger.error(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }

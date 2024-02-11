@@ -1,12 +1,13 @@
-/*import CartsDao from '../dao/mongo/cartsDao.js';
-import UsersDao from '../dao/mongo/usersDao.js';
-import ProductsDao from '../dao/mongo/productsDao.js';
-import ticketsDao from '../dao/mongo/ticketsDao.js';
+// import CartsDao from '../dao/mongo/cartsDao.js';
+// import UsersDao from '../dao/mongo/usersDao.js';
+// import ProductsDao from '../dao/mongo/productsDao.js';
+// import ticketsDao from '../dao/mongo/ticketsDao.js';
+import { CartService } from '../repository/index.js';
 
-const CartsDaoManager = new CartsDao();
-const UsersDaoManager = new UsersDao();
-const ProductsDaoManager = new ProductsDao();
-const ticketsDaoManager = new ticketsDao();
+// const CartsDaoManager = new CartsDao();
+// const UsersDaoManager = new UsersDao();
+// const ProductsDaoManager = new ProductsDao();
+// const ticketsDaoManager = new ticketsDao();
 
 async function procesarProductos(productsArray) {
   const productsNotProcessed = [];
@@ -62,32 +63,32 @@ function createResult(doc, state, urlPrev, urlNext) {
 }
 
 export default class CartServices {
-  async createNewCart(products) {
-    try {
-      const cart = {
-        products,
-      };
-      return await CartsDaoManager.createOne(cart);
-    } catch (error) {
-      req.logger.warn(error);
-      return error;
-    }
-  }
+  // async createNewCart(products) {
+  //   try {
+  //     const cart = {
+  //       products,
+  //     };
+  //     return await CartsDaoManager.createOne(cart);
+  //   } catch (error) {
+  //     req.logger.warn(error);
+  //     return error;
+  //   }
+  // }
 
-  async getCartById(cid) {
-    try {
-      const query = { _id: cid };
-      return await CartsDaoManager.getOne(query);
-    } catch (error) {
-      return null;
-    }
-  }
+  // async getCartById(cid) {
+  //   try {
+  //     const query = { _id: cid };
+  //     return await CartsDaoManager.getOne(query);
+  //   } catch (error) {
+  //     return null;
+  //   }
+  //}
 
   async getCarts(params, pathUrl) {
     try {
       const urlPrev = getUrl(params, pathUrl, -1);
       const urlNext = getUrl(params, pathUrl, +1);
-      const cartList = await CartsDaoManager.getAll(params);
+      const cartList = await CartService.paginate(params);
       const result = createResult(cartList, 'success', urlPrev, urlNext);
       return result;
     } catch (error) {
@@ -98,8 +99,7 @@ export default class CartServices {
 
   async updateOneCart(cid, pid) {
     try {
-      const query = { _id: cid };
-      const cartToUpdate = await CartsDaoManager.getOne(query);
+      const cartToUpdate = await CartService.getByID(cid);
       if (!cartToUpdate) return null;
       const indexProduct = cartToUpdate.products.findIndex((product) => {
         return product.product._id == pid;
@@ -109,19 +109,18 @@ export default class CartServices {
       } else {
         cartToUpdate.products.push({ product: pid, quantity: 1 });
       }
-
-      const result = CartsDaoManager.updateOne(query, cartToUpdate);
+      const result = await CartService.update(cartToUpdate);
+      console.log(result);
       return result;
     } catch (error) {
-      req.logger.warn(error);
+      console.log(error);
       return error;
     }
   }
 
   async deleteProductCart(cid, pid) {
     try {
-      const query = { _id: cid };
-      const cartToUpdate = await CartsDaoManager.getOne(query);
+      const cartToUpdate = await CartService.getByID(cid);
       if (!cartToUpdate) return null;
       const indexProduct = cartToUpdate.products.findIndex((product) => {
         return product.product._id == pid;
@@ -134,18 +133,17 @@ export default class CartServices {
       } else {
         return null;
       }
-      const result = CartsDaoManager.updateOne(query, cartToUpdate);
+      const result = CartService.update(cartToUpdate);
       return result;
     } catch (error) {
-      req.logger.warn(error);
+      console.log(error);
       return error;
     }
   }
 
   async updateManyProducts(cid, products) {
     try {
-      const query = { _id: cid };
-      const cartToUpdate = await CartsDaoManager.getOne(query);
+      const cartToUpdate = await CartService.getByID(cid);
       if (!cartToUpdate) return null;
       products.forEach((productFull) => {
         const indexProduct = cartToUpdate.products.findIndex((product) => {
@@ -164,7 +162,7 @@ export default class CartServices {
           });
         }
       });
-      const result = CartsDaoManager.updateOne(query, cartToUpdate);
+      const result = CartService.update(cartToUpdate);
       return result;
     } catch (error) {
       req.logger.warn(error);
@@ -223,4 +221,3 @@ export default class CartServices {
     }
   }
 }
-*/

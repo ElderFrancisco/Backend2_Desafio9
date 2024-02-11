@@ -25,9 +25,7 @@ class Server {
       this.server = http.createServer(this.app);
       this.connect();
       this.middlewares();
-
       this.routes();
-
       Server.instance = this;
     }
 
