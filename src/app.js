@@ -3,14 +3,14 @@ import http from 'http';
 import setupRoutes from './routes/index.js';
 import bodyParser from 'body-parser';
 import exphbs from 'express-handlebars';
-import utilSocket from './util/socket.js';
+//import utilSocket from './util/socket.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import initializePassport from './config/passport.config.js';
+//import initializePassport from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
-import { config, mongo } from './config/config.js';
+import config from './config/config.js';
 import compression from 'express-compression';
 import errorHandler from './middlewares/error.js';
 import __dirname from './utils.js';
@@ -45,8 +45,8 @@ class Server {
     this.app.use(
       session({
         store: MongoStore.create({
-          mongoUrl: mongo.mongo_url,
-          dbName: mongo.mongo_name,
+          mongoUrl: config.mongo_url,
+          dbName: config.mongo_name,
           ttl: 1100,
         }),
         secret: config.privatekey,
@@ -62,12 +62,12 @@ class Server {
         brotli: { enabled: true, zlib: {} },
       }),
     );
-    initializePassport();
+    //initializePassport();
   }
 
   connect() {
     mongoose
-      .connect(mongo.mongo_url, { dbName: mongo.mongo_name })
+      .connect(config.mongo_url, { dbName: config.mongo_name })
       .then(() => {
         console.log('db connected');
       })
@@ -79,7 +79,7 @@ class Server {
   middlewares() {
     this.app.use(addLogger);
     this.app.use(errorHandler);
-    utilSocket(this.server);
+    //utilSocket(this.server);
   }
 
   routes() {

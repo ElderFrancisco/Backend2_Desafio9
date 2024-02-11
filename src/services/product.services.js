@@ -1,4 +1,5 @@
-import ProductsDao from '../dao/mongo/productsDao.js';
+import ProductsDao from '../DAO/mongo/products.mongo.js';
+import { ProductService } from '../repository/index.js';
 
 const ProductsDaoManager = new ProductsDao();
 
@@ -39,7 +40,8 @@ class ProductServices {
     try {
       const urlPrev = getUrl(params, pathUrl, -1);
       const urlNext = getUrl(params, pathUrl, +1);
-      const productsList = await ProductsDaoManager.getAllPaginate(params);
+      //const productsList = await ProductsDaoManager.getAllPaginate(params);
+      const productsList = await ProductService.paginate(params);
       const result = createResult(productsList, 'success', urlPrev, urlNext);
       return result;
     } catch (error) {
@@ -57,15 +59,16 @@ class ProductServices {
     }
   }
 
-  async findProductById(id) {
-    try {
-      const query = { _id: id };
-      return await ProductsDaoManager.get(query);
-    } catch (error) {
-      req.logger.error(error);
-      return null;
-    }
-  }
+  // async findProductById(id) {
+  //   try {
+  //     console.log('AAAAAAAAAAAAAAAAAAAAA');
+  //     const query = { _id: id };
+  //     return await ProductService.get(query);
+  //   } catch (error) {
+  //     req.logger.error(error);
+  //     return null;
+  //   }
+  // }
 
   async findByIdAndUpdate(id, body) {
     try {

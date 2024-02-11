@@ -1,4 +1,5 @@
 import ProductServices from '../services/product.services.js';
+import { ProductService } from '../repository/index.js';
 
 const allowedFields = [
   'title',
@@ -93,24 +94,22 @@ class ProductController {
   async addProduct(req, res) {
     try {
       const productBody = getProductByBody(req);
-      if (
-        !productBody.title ||
-        !productBody.description ||
-        !productBody.price ||
-        !productBody.category ||
-        !productBody.code ||
-        !productBody.stock
-      ) {
-        req.logger.debug(
-          `Por favor complete todos los campos solicitados de ${title}`,
-        );
-        return res.status(400).json({ error: 'Ingrese todos los campos' });
-      } else {
-        const NewProduct = await ProductServicesManager.createProduct(
-          productBody,
-        );
-        return res.status(201).json({ status: 'success', payload: NewProduct });
-      }
+      // if (
+      //   !productBody.title ||
+      //   !productBody.description ||
+      //   !productBody.price ||
+      //   !productBody.category ||
+      //   !productBody.code ||
+      //   !productBody.stock
+      // ) {
+      //   req.logger.debug(
+      //     `Por favor complete todos los campos solicitados de ${title}`,
+      //   );
+      //   return res.status(400).json({ error: 'Ingrese todos los campos' });
+      // } else {
+      const NewProduct = await ProductService.create(productBody);
+      return res.status(201).json({ status: 'success', payload: NewProduct });
+      //      }
     } catch (error) {
       req.logger.error(error);
       return res.status(500).json({ status: 'error' });
@@ -120,7 +119,7 @@ class ProductController {
   async getProductById(req, res) {
     try {
       const Id = req.params.pid;
-      const productId = await ProductServicesManager.findProductById(Id);
+      const productId = await ProductService.getByID(Id);
       if (productId == null) {
         req.logger.info('Product not found');
         return res
