@@ -1,6 +1,6 @@
 // import webSocketRoute from './websocket.route.js';
 import productsRoute from './products.route.js';
-// import cartsRoute from './cart.route.js';
+import cartsRoute from './cart.route.js';
 // import sessionRoute from './session.route.js';
 // import mockingRoute from './mocking.route.js';
 // import loggerRoute from './logger.route.js';
@@ -12,8 +12,8 @@ import productsApi from './api/products.api.js';
 const setupRoutes = (app) => {
   //webSocketRoute(app);
   productsRoute(app);
-  /*cartsRoute(app);
-  sessionRoute(app);
+  cartsRoute(app);
+  /*sessionRoute(app);
   mockingRoute(app);
   loggerRoute(app);
 

@@ -10,6 +10,9 @@ export default class User {
   getByID = async (id) => {
     return UserModel.findById(id);
   };
+  getByQuery = async (query) => {
+    return UserModel.findOne(query);
+  };
   update = async (data) => {
     return UserModel.updateOne({ _id: data._id }, data);
   };

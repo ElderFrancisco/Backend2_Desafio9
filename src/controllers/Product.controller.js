@@ -103,6 +103,11 @@ export const addProduct = async (req, res) => {
 export const getProductById = async (req, res) => {
   try {
     const Id = req.params.pid;
+    if (!isValidMongoId(pid)) {
+      return res
+        .status(400)
+        .json({ status: 'error', error: 'Invalid Product ID' });
+    }
     const productId = await ProductService.getByID(Id);
     if (productId == null) {
       req.logger.info('Product not found');
@@ -120,6 +125,11 @@ export const getProductById = async (req, res) => {
 export const updateProductById = async (req, res) => {
   try {
     const Id = req.params.pid;
+    if (!isValidMongoId(pid)) {
+      return res
+        .status(400)
+        .json({ status: 'error', error: 'Invalid Product ID' });
+    }
     const body = req.body;
     const productToUpdate = await ProductService.getByID(Id);
     if (!productToUpdate) {
@@ -139,6 +149,11 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
   try {
     const Id = req.params.pid;
+    if (!isValidMongoId(pid)) {
+      return res
+        .status(400)
+        .json({ status: 'error', error: 'Invalid Product ID' });
+    }
     const result = await ProductService.getByID(Id);
     //Si el user es owner del product o es admin, elimine
 
@@ -182,6 +197,11 @@ export const renderGetProducts = async (req, res) => {
 export const renderGetProductById = async (req, res) => {
   try {
     const Id = req.params.pid;
+    if (!isValidMongoId(pid)) {
+      return res
+        .status(400)
+        .json({ status: 'error', error: 'Invalid Product ID' });
+    }
     const product = await ProductService.getByID(Id);
     if (product == null) {
       return res
@@ -194,3 +214,6 @@ export const renderGetProductById = async (req, res) => {
     return res.status(500).json({ status: 'error' });
   }
 };
+function isValidMongoId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
+}

@@ -11,6 +11,9 @@ export default class UserRepository {
   getByID = async (id) => {
     return this.dao.getByID(id);
   };
+  getByCartID = async (id) => {
+    return this.dao.getByQuery({ cartId: id });
+  };
   create = async (data) => {
     const dataToInsert = new UserCreateDTO(data);
     return this.dao.create(dataToInsert);

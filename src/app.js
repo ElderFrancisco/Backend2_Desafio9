@@ -23,7 +23,7 @@ class Server {
       this.port = config.port || 3000;
       this.settings();
       this.server = http.createServer(this.app);
-      this.connect();
+      // this.connect();
       this.middlewares();
       this.routes();
       Server.instance = this;

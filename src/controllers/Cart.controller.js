@@ -1,5 +1,6 @@
 import CartServices from '../services/cart.services.js';
 import { CartService } from '../repository/index.js';
+import mongoose from 'mongoose';
 
 const CartServicesManager = new CartServices();
 
@@ -69,6 +70,11 @@ export default class CartController {
   async getCartById(req, res) {
     try {
       const cid = req.params.cid;
+      if (!isValidMongoId(cid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Cart ID' });
+      }
       const result = await CartService.getByID(cid);
       if (!result) {
         req.logger.info('Cart not found');
@@ -98,7 +104,17 @@ export default class CartController {
   async updateOneCartByIdProduct(req, res) {
     try {
       const cid = req.params.cid;
+      if (!isValidMongoId(cid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Cart ID' });
+      }
       const pid = req.params.pid;
+      if (!isValidMongoId(pid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Product ID' });
+      }
       const result = await CartServicesManager.updateOneCart(cid, pid);
       if (!result) {
         req.logger.info('Cart not found');
@@ -116,7 +132,17 @@ export default class CartController {
   async deleteProductById(req, res) {
     try {
       const cid = req.params.cid;
+      if (!isValidMongoId(cid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Cart ID' });
+      }
       const pid = req.params.pid;
+      if (!isValidMongoId(pid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Product ID' });
+      }
       const result = await CartServicesManager.deleteProductCart(cid, pid);
       if (!result) {
         req.logger.info('Cart not found');
@@ -134,6 +160,11 @@ export default class CartController {
   async updateManyProducts(req, res) {
     try {
       const cid = req.params.cid;
+      if (!isValidMongoId(cid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Cart ID' });
+      }
       const productsBody = Array.isArray(req.body.products)
         ? req.body.products
         : [];
@@ -175,6 +206,11 @@ export default class CartController {
   async emptyCartById(req, res) {
     try {
       const cid = req.params.cid;
+      if (!isValidMongoId(cid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Cart ID' });
+      }
       const result = await CartService.emptyByID(cid);
       if (!result) {
         req.logger.info('Cart not found');
@@ -192,17 +228,22 @@ export default class CartController {
   async renderGetCartById(req, res) {
     try {
       const cid = req.params.cid;
-      const result = await CartServicesManager.getCartById(cid);
+      if (!isValidMongoId(cid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Cart ID' });
+      }
+
+      const result = await CartService.getByID(cid);
 
       if (!result) {
-        req.logger.info('Cart not found');
         return res
           .status(404)
           .json({ status: 'error', error: 'Cart Not Found' });
       }
       return res.status(200).render('cartView', { cart: result });
     } catch (error) {
-      req.logger.error(error);
+      console.log(error);
       return null;
     }
   }
@@ -210,12 +251,25 @@ export default class CartController {
   async purchaseCartById(req, res) {
     try {
       const cid = req.params.cid;
-      const result = await CartServicesManager.purchaseCart(cid);
+      if (!isValidMongoId(cid)) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Invalid Cart ID' });
+      }
+      const result = await CartService.createTicket(cid);
+      if (result == null)
+        return res.status(404).json({
+          status: 'Error',
+          message: 'Usuario No encontrado o carrito vacio',
+        });
 
       return res.status(201).json({ status: 'Success', payload: result });
     } catch (error) {
-      req.logger.error(error);
+      console.log(error);
       return res.status(500).json({ status: 'error' });
     }
   }
+}
+function isValidMongoId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
 }
