@@ -1,8 +1,15 @@
 import { Router } from 'express';
-import CartController from '../../controllers/Cart.controller.js';
-//import passport from 'passport';
-
-const cartController = new CartController();
+import {
+  createNewCart,
+  deleteProductById,
+  emptyCartById,
+  getCartById,
+  getCarts,
+  purchaseCartById,
+  updateManyProducts,
+  updateOneCartByIdProduct,
+} from '../../controllers/Cart.controller.js';
+import passport from 'passport';
 
 const isUserMiddleware = (req, res, next) => {
   if (req.user && req.user.user.rol === 'user') {
@@ -12,58 +19,52 @@ const isUserMiddleware = (req, res, next) => {
   }
 };
 
-export default (app) => {
-  let router = new Router();
+const router = Router();
 
-  app.use('/api/carts', router);
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  createNewCart,
+);
 
-  router.post(
-    '/',
-    // passport.authenticate('jwt', { session: false }),
-    cartController.createNewCart,
-  );
+router.get(
+  '/:cid',
+  passport.authenticate('jwt', { session: false }),
+  getCartById,
+);
 
-  router.get(
-    '/:cid',
-    // passport.authenticate('jwt', { session: false }),
-    cartController.getCartById,
-  );
+router.get('/', passport.authenticate('jwt', { session: false }), getCarts);
 
-  router.get(
-    '/',
-    // passport.authenticate('jwt', { session: false }),
-    cartController.getCarts,
-  );
+router.post(
+  '/:cid/product/:pid',
+  passport.authenticate('jwt', { session: false }),
+  isUserMiddleware,
+  updateOneCartByIdProduct,
+);
 
-  router.post(
-    '/:cid/product/:pid',
-    // passport.authenticate('jwt', { session: false }),
-    // isUserMiddleware,
-    cartController.updateOneCartByIdProduct,
-  );
+router.delete(
+  '/:cid/product/:pid',
+  passport.authenticate('jwt', { session: false }),
+  deleteProductById,
+);
 
-  router.delete(
-    '/:cid/product/:pid',
-    // passport.authenticate('jwt', { session: false }),
-    cartController.deleteProductById,
-  );
+router.put(
+  '/:cid',
+  isUserMiddleware,
+  passport.authenticate('jwt', { session: false }),
+  updateManyProducts,
+);
 
-  router.put(
-    '/:cid',
-    //isUserMiddleware,
-    // passport.authenticate('jwt', { session: false }),
-    cartController.updateManyProducts,
-  );
+router.delete(
+  '/:cid',
+  passport.authenticate('jwt', { session: false }),
+  emptyCartById,
+);
 
-  router.delete(
-    '/:cid',
-    // passport.authenticate('jwt', { session: false }),
-    cartController.emptyCartById,
-  );
+router.get(
+  '/:cid/purchase',
+  passport.authenticate('jwt', { session: false }),
+  purchaseCartById,
+);
 
-  router.get(
-    '/:cid/purchase',
-    // passport.authenticate('jwt', { session: false }),
-    cartController.purchaseCartById,
-  );
-};
+export default router;

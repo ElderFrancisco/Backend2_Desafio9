@@ -35,8 +35,8 @@ router.get(
 
 router.put(
   '/:pid',
-  // passport.authenticate('jwt', { session: false }),
-  // isAdminMiddleware,
+  passport.authenticate('jwt', { session: false }),
+  isAdminMiddleware,
   updateProductById,
 );
 

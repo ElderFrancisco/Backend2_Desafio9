@@ -1,17 +1,6 @@
 import ProductServices from '../services/product.services.js';
 import { ProductService } from '../repository/index.js';
 
-// const allowedFields = [
-//   'title',
-//   'description',
-//   'price',
-//   'thumbnail',
-//   'code',
-//   'stock',
-//   'category',
-//   'status',
-// ];
-
 function getPathUrl(req) {
   const currentPath = req.originalUrl;
   const index = currentPath.indexOf('?');
@@ -53,32 +42,8 @@ function getQueryParams(req) {
   return params;
 }
 
-// function getProductByBody(req) {
-//   const body = req.body;
-//   const title = body.title;
-//   const description = body.description;
-//   const price = body.price;
-//   const thumbnail = Array.isArray(body.thumbnail) ? body.thumbnail : [];
-//   const code = body.code;
-//   const stock = body.stock;
-//   const category = body.category;
-//   const status = body.status === false ? false : true;
-//   const productBody = {
-//     title,
-//     description,
-//     price,
-//     thumbnail,
-//     code,
-//     stock,
-//     category,
-//     status,
-//   };
-//   return productBody;
-//}
-
 const ProductServicesManager = new ProductServices();
 
-// class ProductController {
 export const getProducts = async (req, res) => {
   try {
     const pathUrl = getPathUrl(req);
@@ -177,7 +142,7 @@ export const renderGetProducts = async (req, res) => {
   try {
     const pathUrl = getPathUrl(req);
     const params = getQueryParams(req);
-    //const { user } = req.user;
+    const { user } = req.user;
     const productList = await ProductServicesManager.getProducts(
       params,
       pathUrl,
@@ -187,7 +152,7 @@ export const renderGetProducts = async (req, res) => {
     }
     return res
       .status(200)
-      .render('products', { products: productList, user: {} });
+      .render('products', { products: productList, user: user });
   } catch (error) {
     req.logger.error(error);
     return res.status(500).json({ status: 'error' });
@@ -214,6 +179,7 @@ export const renderGetProductById = async (req, res) => {
     return res.status(500).json({ status: 'error' });
   }
 };
+
 function isValidMongoId(id) {
   return mongoose.Types.ObjectId.isValid(id);
 }

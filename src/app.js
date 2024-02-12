@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-//import initializePassport from './config/passport.config.js';
+import initializePassport from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
 import config from './config/config.js';
 import compression from 'express-compression';
@@ -23,7 +23,6 @@ class Server {
       this.port = config.port || 3000;
       this.settings();
       this.server = http.createServer(this.app);
-      // this.connect();
       this.middlewares();
       this.routes();
       Server.instance = this;
@@ -60,18 +59,7 @@ class Server {
         brotli: { enabled: true, zlib: {} },
       }),
     );
-    //initializePassport();
-  }
-
-  connect() {
-    mongoose
-      .connect(config.mongo_url, { dbName: config.mongo_name })
-      .then(() => {
-        console.log('db connected');
-      })
-      .catch((e) => {
-        console.log('error al conectar mongo: ' + e);
-      });
+    initializePassport();
   }
 
   middlewares() {

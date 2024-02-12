@@ -5,13 +5,12 @@ import HashManager from '../util/hash.js';
 import passportJWT from 'passport-jwt';
 import { generateToken } from '../util/jwt.js';
 import config from './config.js';
-import CartServices from '../services/cart.services.js';
-import UsersServices from '../services/user.services.js';
+
+import { CartService, UserService } from '../repository/index.js';
 
 const JWTStrategy = passportJWT.Strategy;
-const CartController = new CartServices();
+
 const HashController = new HashManager();
-const usersServices = new UsersServices();
 
 const extractCookie = (req) => {
   return req.cookies ? req.cookies['cookieJWT'] : null;
@@ -29,12 +28,14 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { first_name, last_name, email, age } = req.body;
         try {
-          const user = await usersServices.findOneByEmail(username);
+          const user = await UserService.getByEmail(username);
           if (user) {
-            req.logger.info('user already existst');
+            console.log('already exists');
             return done(null, false);
           }
-          const cartId = await CartController.createNewCart(req.body.products);
+          const cartId = await CartService.create({
+            products: req.body.products,
+          });
           const newUser = {
             first_name,
             last_name,
@@ -43,7 +44,7 @@ const initializePassport = () => {
             password: HashController.createHash(password),
             cartId: cartId._id,
           };
-          const result = await usersServices.createNewUser(newUser);
+          const result = await UserService.create(newUser);
           return done(null, result);
         } catch (error) {
           req.logger.error(error);
@@ -61,7 +62,7 @@ const initializePassport = () => {
 
       async (username, password, done) => {
         try {
-          const user = await usersServices.findOneByEmail(username);
+          const user = await UserService.getByEmail(username);
           if (!user) {
             req.logger.debug('user doesnt exist');
             return done(null, false);
@@ -90,13 +91,14 @@ const initializePassport = () => {
       async (asccesToken, refreshToken, profile, done) => {
         try {
           if (profile._json.email == null) return done(null, false);
-          const user = await usersServices.findOneByEmail(profile._json.email);
+          const user = await UserService.getByEmail(profile._json.email);
           if (user) {
             const token = generateToken(user);
             user.token = token;
             return done(null, user);
           }
-          const cartId = await CartController.createNewCart([]);
+          const cartId = await CartService.create([]);
+
           const newUser = {
             first_name: profile._json.name,
             last_name: '',
@@ -105,7 +107,7 @@ const initializePassport = () => {
             password: HashController.createHash(''),
             cartId: cartId._id,
           };
-          const result = await usersServices.createNewUser(newUser);
+          const result = await UserService.create(newUser);
 
           return done(null, result);
         } catch (error) {
@@ -138,7 +140,7 @@ const initializePassport = () => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    const user = await usersServices.findUserById(id);
+    const user = await UserService.getByID(id);
     done(null, user);
   });
 };

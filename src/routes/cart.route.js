@@ -1,12 +1,15 @@
-import CartController from '../controllers/Cart.controller.js';
+import passport from 'passport';
 import { Router } from 'express';
+import { renderGetCartById } from '../controllers/Cart.controller.js';
 
-const cartController = new CartController();
+const router = Router();
 
-export default (app) => {
-  let router = new Router();
-
-  app.use('/cart', router);
-
-  router.get('/:cid', cartController.renderGetCartById);
-};
+router.get(
+  '/:cid',
+  passport.authenticate('jwt', {
+    session: false,
+    failureRedirect: '/login',
+  }),
+  renderGetCartById,
+);
+export default router;
