@@ -18,4 +18,7 @@ export default class UserRepository {
     const dataToInsert = new UserCreateDTO(data);
     return this.dao.create(dataToInsert);
   };
+  recoverPassword = async (data) => {
+    
+  };
 }

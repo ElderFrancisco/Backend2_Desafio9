@@ -48,7 +48,7 @@ const sessionController = new SessionController();
     sessionController.current,
   );
   router.get(
-    '/recover/',
+    '/recover/:email',
     passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
     sessionController.current,
   );

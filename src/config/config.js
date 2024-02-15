@@ -12,4 +12,7 @@ export default {
   mongo_url: process.env.MONGO_URL,
   mongo_name: process.env.MONGO_NAME,
   persistence: process.env.PERSISTENCE,
+  mailUser: process.env.MAIL_USER,
+  mailPass: process.env.MAIL_PASS,
+
 };

@@ -1,3 +1,5 @@
+import { UserService } from "../repository";
+
 class SessionController {
   async login(req, res) {
     try {
@@ -48,6 +50,20 @@ class SessionController {
   async current(req, res) {
     try {
       return res.send({ status: 'Success', payload: req.user });
+    } catch (error) {
+      req.logger.error(error);
+      return res.status(500).json({ status: 'error' });
+    }
+  }
+  async recoveryPassword(req, res) {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res
+          .status(400)
+          .json({ status: 'error', error: 'Email is required' });
+      }
+      UserService.recoverPassword(email)
     } catch (error) {
       req.logger.error(error);
       return res.status(500).json({ status: 'error' });
