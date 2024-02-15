@@ -1,5 +1,6 @@
 import ProductServices from '../services/product.services.js';
 import { ProductService } from '../repository/index.js';
+import mongoose from 'mongoose';
 
 function getPathUrl(req) {
   const currentPath = req.originalUrl;
@@ -90,7 +91,7 @@ export const getProductById = async (req, res) => {
 export const updateProductById = async (req, res) => {
   try {
     const Id = req.params.pid;
-    if (!isValidMongoId(pid)) {
+    if (!isValidMongoId(Id)) {
       return res
         .status(400)
         .json({ status: 'error', error: 'Invalid Product ID' });
@@ -114,7 +115,7 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
   try {
     const Id = req.params.pid;
-    if (!isValidMongoId(pid)) {
+    if (!isValidMongoId(Id)) {
       return res
         .status(400)
         .json({ status: 'error', error: 'Invalid Product ID' });
@@ -162,7 +163,7 @@ export const renderGetProducts = async (req, res) => {
 export const renderGetProductById = async (req, res) => {
   try {
     const Id = req.params.pid;
-    if (!isValidMongoId(pid)) {
+    if (!isValidMongoId(Id)) {
       return res
         .status(400)
         .json({ status: 'error', error: 'Invalid Product ID' });

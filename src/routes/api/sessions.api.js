@@ -4,10 +4,11 @@ import SessionController from '../../controllers/Session.controller.js';
 
 const sessionController = new SessionController();
 
-export default (app) => {
+
   const router = Router();
 
-  app.use('/api/session', router);
+
+  
 
   router.post(
     '/login',
@@ -46,4 +47,9 @@ export default (app) => {
     passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
     sessionController.current,
   );
-};
+  router.get(
+    '/recover/',
+    passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+    sessionController.current,
+  );
+export default router

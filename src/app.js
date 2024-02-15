@@ -69,7 +69,8 @@ class Server {
   }
 
   routes() {
-    setupRoutes(this.app);
+    this.app.use('/',setupRoutes)
+
   }
 
   listen() {

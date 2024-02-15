@@ -2,11 +2,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import { accessPublicWithoutAuth, authToHome } from '../util/jwt.js';
 
-export default (app) => {
-  let router = new Router();
-
-  app.use('/', router);
-
+  const router = Router();
   router.get('/', authToHome, async (req, res) => {
     try {
       const user = req.user;
@@ -60,4 +56,5 @@ export default (app) => {
       }
     },
   );
-};
+
+  export default router

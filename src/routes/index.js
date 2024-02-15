@@ -1,4 +1,4 @@
-// import webSocketRoute from './websocket.route.js';
+ import webSocketRoute from './websocket.route.js';
 import productsRoute from './products.route.js';
 import cartsRoute from './cart.route.js';
 import sessionRoute from './session.route.js';
@@ -9,21 +9,24 @@ import cartsApi from './api/carts.api.js';
 import productsApi from './api/products.api.js';
 import sessionsApi from './api/sessions.api.js';
 
-const setupRoutes = (app) => {
-  //webSocketRoute(app);
-  productsRoute(app);
-  app.use('/cart', cartsRoute);
-  sessionRoute(app);
-  /*mockingRoute(app);
-  loggerRoute(app);
+import { Router } from 'express';
+const router = Router();
+
+
+
+  router.use('/chat', webSocketRoute);
+  router.use('/cart', cartsRoute);
+  router.use('/products', productsRoute);
+  router.use('/', sessionRoute);
+  /*mockingRoute(router);
+  loggerRoute(router);
 
   // API
   */
-  app.use('/api/carts', cartsApi);
-  //productsApi(app);
-  sessionsApi(app);
+  router.use('/api/carts', cartsApi);
+  router.use('/api/session', sessionsApi);
 
-  app.use('/api/products', productsApi);
-};
+  router.use('/api/products', productsApi);
 
-export default setupRoutes;
+
+export default router;

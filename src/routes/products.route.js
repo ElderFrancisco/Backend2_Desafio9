@@ -6,10 +6,7 @@ import {
 import { Router } from 'express';
 import passport from 'passport';
 
-export default (app) => {
-  let router = new Router();
-  app.use('/products', router);
-
+const router = Router();
   router.get(
     '/',
     passport.authenticate('jwt', {
@@ -27,4 +24,4 @@ export default (app) => {
     }),
     renderGetProductById,
   );
-};
+export default router
