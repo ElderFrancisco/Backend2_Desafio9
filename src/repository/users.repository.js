@@ -23,7 +23,9 @@ export default class UserRepository {
     const dataToInsert = new UserUpdateDTO(data);
     return this.dao.update(dataToInsert);
   };
-  updatePassword = async (id, password) => {
-    return this.dao.update(id, password);
+  premium = async (data) => {
+    const dataToInsert = new UserUpdateDTO(data);
+    dataToInsert.rol = 'premium';
+    return this.dao.update(dataToInsert);
   };
 }

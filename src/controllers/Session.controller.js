@@ -188,7 +188,12 @@ export const RenderforgotPassword = async (req, res) => {
 
 export const RenderCurrent = async (req, res) => {
   try {
-    return res.send({ status: 'success', payload: req.user });
+    const user = req.user.user;
+    let infoRol = null;
+    if (user.rol == 'user') {
+      infoRol = 'premium';
+    }
+    return res.render('current', { user: user, infoRol });
   } catch (error) {
     req.logger.error(error);
   }
@@ -197,6 +202,7 @@ export const RenderCurrent = async (req, res) => {
 export const RenderHome = async (req, res) => {
   try {
     const user = req.user;
+    console.log(user);
     return res.render('index', { user: user });
   } catch (error) {
     req.logger.error(error);
@@ -236,6 +242,13 @@ export const RenderAuthfailed = async (req, res) => {
 export const Render404 = async (req, res) => {
   try {
     return res.render('404', {});
+  } catch (error) {
+    req.logger.error(error);
+  }
+};
+export const premium = async (req, res) => {
+  try {
+    return res.render('premium', {});
   } catch (error) {
     req.logger.error(error);
   }

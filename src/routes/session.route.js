@@ -10,6 +10,7 @@ import {
   RenderRegister,
   RenderRestorePassword,
   RenderforgotPassword,
+  premium,
 } from '../controllers/Session.controller.js';
 
 const router = Router();
@@ -29,5 +30,10 @@ router.get(
 router.get('/reset-password/:id/:code', RenderRestorePassword);
 router.get('/forgot-password', RenderforgotPassword);
 router.get('/404', Render404);
+router.get(
+  '/premium',
+  passport.authenticate('jwt', { session: false }),
+  premium,
+);
 
 export default router;
