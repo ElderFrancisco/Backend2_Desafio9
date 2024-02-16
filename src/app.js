@@ -69,13 +69,12 @@ class Server {
   }
 
   routes() {
-    this.app.use('/',setupRoutes)
-
+    this.app.use('/', setupRoutes);
   }
 
   listen() {
     this.server.listen(this.port, () => {
-      console.log(`http://localhost:${this.port}`);
+      console.log(`${config.baseUrl}:${this.port}`);
     });
   }
 }
