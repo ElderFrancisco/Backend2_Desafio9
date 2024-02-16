@@ -4,6 +4,7 @@ import { accessPublicWithoutAuth, authToHome } from '../util/jwt.js';
 import {
   Render404,
   RenderAuthfailed,
+  RenderCambios,
   RenderCurrent,
   RenderHome,
   RenderLogin,
@@ -20,7 +21,7 @@ router.get('/register', accessPublicWithoutAuth, RenderRegister);
 
 router.get('/login', accessPublicWithoutAuth, RenderLogin);
 
-router.get('/authfailed', RenderAuthfailed);
+router.get('/authfailed', accessPublicWithoutAuth, RenderAuthfailed);
 
 router.get(
   '/current',
@@ -35,5 +36,6 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   premium,
 );
+router.get('/cambios', accessPublicWithoutAuth, RenderCambios);
 
 export default router;

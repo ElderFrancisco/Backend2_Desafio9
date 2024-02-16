@@ -222,7 +222,9 @@ export const renderGetCartById = async (req, res) => {
     if (!result) {
       return res.status(404).json({ status: 'error', error: 'Cart Not Found' });
     }
-    return res.status(200).render('cartView', { cart: result });
+    return res
+      .status(200)
+      .render('cartView', { cart: result, user: req.user.user });
   } catch (error) {
     console.log(error);
     return null;

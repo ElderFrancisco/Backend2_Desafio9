@@ -74,7 +74,8 @@ const initializePassport = () => {
           user.token = token;
           return done(null, user);
         } catch (err) {
-          req.logger.warn(err);
+          console.log(err);
+          //req.logger.warn(err);
           return done(null, false);
         }
       },

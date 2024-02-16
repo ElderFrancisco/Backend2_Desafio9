@@ -151,7 +151,7 @@ export const restorePassword = async (req, res) => {
 
     await ResetService.deleteById(Reset._id);
 
-    return res.status(201).redirect('/login');
+    return res.status(201).clearCookie('cookieJWT').render('cambios');
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error' });
@@ -248,7 +248,15 @@ export const Render404 = async (req, res) => {
 };
 export const premium = async (req, res) => {
   try {
-    return res.render('premium', {});
+    return res.render('premium', { user: req.user.user });
+  } catch (error) {
+    req.logger.error(error);
+  }
+};
+
+export const RenderCambios = async (req, res) => {
+  try {
+    return res.render('cambios', {});
   } catch (error) {
     req.logger.error(error);
   }
