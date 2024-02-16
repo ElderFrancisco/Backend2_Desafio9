@@ -1,4 +1,5 @@
 import UserCreateDTO from '../DTO/users/users.dto.js';
+import UserUpdateDTO from '../DTO/users/usersUpdate.dto.js';
 
 export default class UserRepository {
   constructor(dao) {
@@ -18,7 +19,11 @@ export default class UserRepository {
     const dataToInsert = new UserCreateDTO(data);
     return this.dao.create(dataToInsert);
   };
-  recoverPassword = async (data) => {
-    
+  update = async (data) => {
+    const dataToInsert = new UserUpdateDTO(data);
+    return this.dao.update(dataToInsert);
+  };
+  updatePassword = async (id, password) => {
+    return this.dao.update(id, password);
   };
 }
