@@ -1,21 +1,27 @@
 import { Router } from 'express';
 import passport from 'passport';
-import SessionController from '../../controllers/Session.controller.js';
-
-const sessionController = new SessionController();
+import {
+  current,
+  forgotPassword,
+  githubcallback,
+  login,
+  logout,
+  register,
+  restorePassword,
+} from '../../controllers/Session.controller.js';
 
 const router = Router();
 
 router.post(
   '/login',
   passport.authenticate('login', { failureRedirect: '/authfailed' }),
-  sessionController.login,
+  login,
 );
 
 router.post(
   '/register',
   passport.authenticate('register', { failureRedirect: '/authfailed' }),
-  sessionController.register,
+  register,
 );
 
 router.get(
@@ -26,7 +32,7 @@ router.get(
 router.get(
   '/githubcallback',
   passport.authenticate('github', { failureRedirect: '/authfailed' }),
-  sessionController.githubcallback,
+  githubcallback,
 );
 
 router.get(
@@ -35,22 +41,14 @@ router.get(
     session: false,
     failureRedirect: '/login',
   }),
-  sessionController.logout,
+  logout,
 );
 
 router.get(
   '/current',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
-  sessionController.current,
+  current,
 );
-router.post(
-  '/forgot-password',
-  //passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
-  sessionController.forgotPassword,
-);
-router.post(
-  '/reset-password/:id/:code',
-  //passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
-  sessionController.restorePassword,
-);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:id/:code', restorePassword);
 export default router;
