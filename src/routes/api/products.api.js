@@ -9,7 +9,7 @@ import {
 } from '../../controllers/Product.controller.js';
 
 const isAdminMiddleware = (req, res, next) => {
-  if (req.user && req.user.user.rol === 'admin') {
+  if (req.user.user.rol === 'admin' || req.user.user.rol === 'premium') {
     next();
   } else {
     res.status(403).json({ error: 'Acceso no autorizado' });
@@ -20,8 +20,8 @@ const router = Router();
 
 router.get('/', getProducts);
 
-router.post(
-  '/',
+router.get(
+  '/a',
   passport.authenticate('jwt', { session: false }),
   isAdminMiddleware,
   addProduct,

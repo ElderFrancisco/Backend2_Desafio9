@@ -8,7 +8,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: String,
+  description: {
+    type: String,
+    default: '',
+  },
   code: {
     type: String,
     unique: true,
@@ -23,8 +26,14 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  stock: Number,
-  category: String,
+  stock: {
+    type: Number,
+    default: 0,
+  },
+  category: {
+    type: String,
+    default: '',
+  },
   thumbnail: {
     type: Array,
     default: [],

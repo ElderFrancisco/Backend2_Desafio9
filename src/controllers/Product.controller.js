@@ -58,10 +58,19 @@ export const getProducts = async (req, res) => {
 };
 export const addProduct = async (req, res) => {
   try {
+    if (!req.body.title || !req.body.price) {
+      return res
+        .status(400)
+        .json({ status: 'error', error: 'Not sent correct data' });
+    }
+    if (req.user.user.rol == 'premium') {
+      req.body.owner = req.user.user.email;
+    }
+
     const NewProduct = await ProductService.create(req.body);
     return res.status(201).json({ status: 'success', payload: NewProduct });
   } catch (error) {
-    req.logger.error(error);
+    console.log(error);
     return res.status(500).json({ status: 'error' });
   }
 };
