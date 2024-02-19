@@ -113,6 +113,18 @@ export const updateProductById = async (req, res) => {
         .status(404)
         .json({ status: 'error', error: 'Product Not Found' });
     }
+
+    //Si el user es owner del product o es admin
+
+    if (
+      productToUpdate.owner != req.user.user.email &&
+      req.user.user.rol != 'admin'
+    ) {
+      return res.status(403).json({
+        status: 'error',
+        error: 'This is not your product or you are not admin',
+      });
+    }
     body['_id'] = Id;
     const result = await ProductService.update(body);
     return res.status(201).json({ status: 'success', payload: result });
@@ -129,8 +141,17 @@ export const deleteProductById = async (req, res) => {
         .status(400)
         .json({ status: 'error', error: 'Invalid Product ID' });
     }
-    const result = await ProductService.getByID(Id);
+    const productToDelete = await ProductService.getByID(Id);
     //Si el user es owner del product o es admin, elimine
+    if (
+      productToDelete.owner != req.user.user.email &&
+      req.user.user.rol != 'admin'
+    ) {
+      return res.status(403).json({
+        status: 'error',
+        error: 'This is not your product or you are not admin',
+      });
+    }
 
     const productDelete = await ProductService.deleteByID(Id);
     if (productDelete.deletedCount === 1) {

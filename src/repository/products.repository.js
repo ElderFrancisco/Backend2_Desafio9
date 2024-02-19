@@ -1,4 +1,5 @@
-import ProductCreateDTO from '../DTO/products.dto.js';
+import ProductCreateDTO from '../DTO/products/products.dto.js';
+import ProductUpdateDTO from '../DTO/products/productsUpdate.dto.js';
 
 export default class ProductRepository {
   constructor(dao) {
@@ -19,7 +20,7 @@ export default class ProductRepository {
     return this.dao.create(dataToInsert);
   };
   update = async (data) => {
-    const dataToInsert = new ProductCreateDTO(data);
+    const dataToInsert = new ProductUpdateDTO(data);
     return this.dao.update(dataToInsert);
   };
   deleteByID = async (id) => {

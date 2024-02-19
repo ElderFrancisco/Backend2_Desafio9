@@ -202,7 +202,6 @@ export const RenderCurrent = async (req, res) => {
 export const RenderHome = async (req, res) => {
   try {
     const user = req.user;
-    console.log(user);
     return res.render('index', { user: user });
   } catch (error) {
     req.logger.error(error);

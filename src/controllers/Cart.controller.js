@@ -1,5 +1,5 @@
 import CartServices from '../services/cart.services.js';
-import { CartService } from '../repository/index.js';
+import { CartService, ProductService } from '../repository/index.js';
 import mongoose from 'mongoose';
 
 const CartServicesManager = new CartServices();
@@ -110,6 +110,19 @@ export const updateOneCartByIdProduct = async (req, res) => {
       return res
         .status(400)
         .json({ status: 'error', error: 'Invalid Product ID' });
+    }
+    const product = await ProductService.getByID(pid);
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ status: 'error', error: 'Product Not Found' });
+    }
+
+    if (req.user.user.email === product.owner) {
+      return res
+        .status(401)
+        .json({ status: 'error', error: 'Cant add yourself product' });
     }
     const result = await CartServicesManager.updateOneCart(cid, pid);
     if (!result) {

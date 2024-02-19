@@ -6,7 +6,7 @@ const router = Router();
 
 router.get(
   '/premium/:id',
-  // passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   premiumById,
 );
 

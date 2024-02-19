@@ -20,8 +20,8 @@ const router = Router();
 
 router.get('/', getProducts);
 
-router.get(
-  '/a',
+router.post(
+  '/',
   passport.authenticate('jwt', { session: false }),
   isAdminMiddleware,
   addProduct,
