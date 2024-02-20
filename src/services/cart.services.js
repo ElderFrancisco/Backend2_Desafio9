@@ -1,4 +1,4 @@
-import { CartService } from '../repository/index.js';
+import { CartService } from "../repository/index.js";
 
 function getUrl(params, path, number) {
   const nextPage = parseInt(params.page) + number;
@@ -32,10 +32,9 @@ export default class CartServices {
       const urlPrev = getUrl(params, pathUrl, -1);
       const urlNext = getUrl(params, pathUrl, +1);
       const cartList = await CartService.paginate(params);
-      const result = createResult(cartList, 'success', urlPrev, urlNext);
+      const result = createResult(cartList, "success", urlPrev, urlNext);
       return result;
     } catch (error) {
-      req.logger.warn(error);
       return error;
     }
   }
@@ -108,7 +107,6 @@ export default class CartServices {
       const result = CartService.update(cartToUpdate);
       return result;
     } catch (error) {
-      req.logger.warn(error);
       return error;
     }
   }

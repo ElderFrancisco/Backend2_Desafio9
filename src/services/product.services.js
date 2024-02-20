@@ -1,4 +1,4 @@
-import { ProductService } from '../repository/index.js';
+import { ProductService } from "../repository/index.js";
 
 function getUrl(params, path, number) {
   const nextPage = parseInt(params.page) + number;
@@ -39,10 +39,9 @@ class ProductServices {
       const urlNext = getUrl(params, pathUrl, +1);
       //const productsList = await ProductsDaoManager.getAllPaginate(params);
       const productsList = await ProductService.paginate(params);
-      const result = createResult(productsList, 'success', urlPrev, urlNext);
+      const result = createResult(productsList, "success", urlPrev, urlNext);
       return result;
     } catch (error) {
-      req.logger.error(error);
       return error;
     }
   }

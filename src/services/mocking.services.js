@@ -1,5 +1,5 @@
-import generateProduct from '../util/generateProduct.js';
-import ProductsDao from '../dao/mongo/productsDao.js';
+import generateProduct from "../util/generateProduct.js";
+import ProductsDao from "../dao/mongo/productsDao.js";
 
 const ProductsDaoManager = new ProductsDao();
 
@@ -13,7 +13,6 @@ export default class MockingServices {
       const productList = await ProductsDaoManager.getAll();
       return productList;
     } catch (error) {
-      req.logger.info(error);
       return error;
     }
   }
