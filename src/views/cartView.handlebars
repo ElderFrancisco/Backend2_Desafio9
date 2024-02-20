@@ -28,7 +28,7 @@
         {{/if}}
         <div id="quantity">
           <h2>Cantidad</h2>
-          <p id="quantity-display">{{quantity}}</p>
+          <p id="card-quantity-{{product._id}}">{{quantity}}</p>
           <button onclick="addProduct('{{product._id}}')">Agregar</button>
           <button>Quitar</button>
         </div>
@@ -56,9 +56,15 @@
     })
       .then(data => {
         // Actualiza la cantidad y muestra el resultado
-        console.log(data);
-        quantity = data.quantity;
-        updateQuantityDisplay();
+        console.log(data.payload.products)
+        const productsList = data.payload.products
+         const productInfo = productsList.find(p => p.product === product);
+
+
+         console.log(productInfo)
+        const quantityProduct = document.getElementById(`card-quantity-${product}`)
+        quantityProduct.textContent = productInfo.quantity
+
       })
       .catch(error => {
         console.log('Error:', error);
