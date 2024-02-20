@@ -32,19 +32,27 @@ function createResult(doc, state, urlPrev, urlNext) {
   return result;
 }
 
-class ProductServices {
-  async getProducts(params, pathUrl) {
-    try {
-      const urlPrev = getUrl(params, pathUrl, -1);
-      const urlNext = getUrl(params, pathUrl, +1);
-      //const productsList = await ProductsDaoManager.getAllPaginate(params);
-      const productsList = await ProductService.paginate(params);
-      const result = createResult(productsList, "success", urlPrev, urlNext);
-      return result;
-    } catch (error) {
-      return error;
-    }
+// async getProducts(params, pathUrl) {
+//   try {
+//     const urlPrev = getUrl(params, pathUrl, -1);
+//     const urlNext = getUrl(params, pathUrl, +1);
+//     //const productsList = await ProductsDaoManager.getAllPaginate(params);
+//     const productsList = await ProductService.paginate(params);
+//     const result = createResult(productsList, "success", urlPrev, urlNext);
+//     return result;
+//   } catch (error) {
+//     return error;
+//   }
+// }
+export const getProductsServices = async (params, pathUrl) => {
+  try {
+    const urlPrev = getUrl(params, pathUrl, -1);
+    const urlNext = getUrl(params, pathUrl, +1);
+    //const productsList = await ProductsDaoManager.getAllPaginate(params);
+    const productsList = await ProductService.paginate(params);
+    const result = createResult(productsList, "success", urlPrev, urlNext);
+    return result;
+  } catch (error) {
+    return error;
   }
-}
-
-export default ProductServices;
+};

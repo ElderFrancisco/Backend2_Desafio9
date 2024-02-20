@@ -129,7 +129,10 @@ export const updateOneCartByIdProduct = async (req, res) => {
       req.logger.info("Cart not found");
       return res.status(404).json({ status: "error", error: "Cart Not Found" });
     }
-    return res.status(201).json({ status: "Success", payload: result });
+    return res
+      .status(201)
+
+      .redirect("/products");
   } catch (error) {
     req.logger.error(error);
     return res.status(500).json({ status: "error" });
@@ -231,6 +234,7 @@ export const renderGetCartById = async (req, res) => {
     }
 
     const result = await CartService.getByID(cid);
+    console.log(result);
 
     if (!result) {
       return res.status(404).json({ status: "error", error: "Cart Not Found" });

@@ -1,14 +1,10 @@
-import { Router } from 'express';
-import MockingController from '../controllers/mocking.controller.js';
+import { Router } from "express";
+import { mocking100products } from "../controllers/mocking.controller.js";
 
-const mockingController = new MockingController();
+const router = Router();
 
-export default (app) => {
-  let router = new Router();
+router.get("/", mocking100products);
 
-  app.use('/mockingproducts', router);
+router.get("/:number", mocking100products);
 
-  router.get('/', mockingController.mocking100products);
-
-  router.get('/:number', mockingController.mocking100products);
-};
+export default router;

@@ -52,7 +52,6 @@ export default class CartServices {
         cartToUpdate.products.push({ product: pid, quantity: 1 });
       }
       const result = await CartService.update(cartToUpdate);
-      console.log(result);
       return result;
     } catch (error) {
       console.log(error);

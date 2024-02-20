@@ -2,7 +2,7 @@ import webSocketRoute from "./websocket.route.js";
 import productsRoute from "./products.route.js";
 import cartsRoute from "./cart.route.js";
 import sessionRoute from "./session.route.js";
-// import mockingRoute from './mocking.route.js';
+import mockingRoute from "./mocking.route.js";
 import loggerRoute from "./logger.route.js";
 
 import api from "./api/index.js";
@@ -15,10 +15,8 @@ router.use("/cart", cartsRoute);
 router.use("/products", productsRoute);
 router.use("/", sessionRoute);
 router.use("/loggerTest", loggerRoute);
-/*mockingRoute(router);
-  loggerRoute(router);
+router.use("/mockingproducts", mockingRoute);
 
-  // API*/
 router.use("/api", api);
 
 router.use("*", (req, res) => res.status(404).render("404"));
