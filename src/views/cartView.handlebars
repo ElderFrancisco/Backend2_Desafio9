@@ -1,5 +1,6 @@
 <div>
   <h1 style="color: #333; text-align: center;">Cart:{{cart._id}}</h1>
+  <p id="cartId" style="display:none">{{cart._id}}</p>
   <ul
     style="list-style-type: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center;"
   >
@@ -25,20 +26,12 @@
         {{else}}
           <p style="margin: 10px 0;">Imagen no disponible</p>
         {{/if}}
-        <a
-          href="#"
-          class="add-product"
-          data-cart-id="{{cart._id}}"
-          data-product-id="{{product._id}}"
-        >+</a>
-        <h5>cantidad: {{quantity}}</h5>
-        <a
-          href="#"
-          class="remove-product"
-          data-cart-id="{{cart._id}}"
-          data-product-id="{{product._id}}"
-        >-</a>
-
+        <div id="quantity">
+          <h2>Cantidad</h2>
+          <p id="quantity-display">{{quantity}}</p>
+          <button onclick="addProduct('{{product._id}}')">Agregar</button>
+          <button>Quitar</button>
+        </div>
       </li>
 
     {{/each}}
@@ -47,3 +40,28 @@
 
   </div>
 </div>
+
+<script>
+  
+  function addProduct(product) {
+    const cart = ('{{cart._id}}');
+      fetch(`/api/carts/${cart}/product/${product}`, {
+        method: 'POST'
+      })
+      .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.json();
+    })
+      .then(data => {
+        // Actualiza la cantidad y muestra el resultado
+        console.log(data);
+        quantity = data.quantity;
+        updateQuantityDisplay();
+      })
+      .catch(error => {
+        console.log('Error:', error);
+      });
+    }
+</script>
