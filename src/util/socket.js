@@ -1,19 +1,18 @@
 import { Server } from 'socket.io';
-import { MessageService } from '../repository';
+import { MessageService } from '../repository/index.js';
 
 export default (appServer) => {
-  const io = new Server();
+  const io = new Server(appServer);
 
   io.on('connection', async (socket) => {
     console.log('Cliente conectado');
-    logger.error('cliente conectado');
 
     socket.emit('Chat', await MessageService.get());
 
     socket.on('newChat', async (message) => {
       await MessageService.create(message);
 
-      socket.emit('Chat', await MessageService.get());
+      io.emit('Chat', await MessageService.get());
     });
   });
 };

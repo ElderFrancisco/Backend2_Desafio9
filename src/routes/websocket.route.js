@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import SocketController from '../controllers/Socket.controller.js';
+import {chat} from '../controllers/Socket.controller.js';
 import passport from 'passport';
 
 
 const isUserMiddleware = (req, res, next) => {
-  if (req.user && req.user.user.rol === 'user') {
+  if (req.user.user.rol !== 'admin') {
     next();
   } else {
     res.status(403).json({ error: 'Acceso no autorizado' });
   }
 };
 
-const socketController = new SocketController();
+
 
   const router = Router();
 
@@ -19,6 +19,6 @@ const socketController = new SocketController();
     '/',
     passport.authenticate('jwt', { session: false, failureRedirect: '/' }),
     isUserMiddleware,
-    socketController.chat,
+    chat,
   );
  export default router

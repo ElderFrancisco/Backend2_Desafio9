@@ -6,7 +6,7 @@ import ProductRepository from './products.repository.js';
 import CartRepository from './carts.repository.js';
 import UserRepository from './users.repository.js';
 import TicketRepository from './tickets.repository.js';
-import MessageRepository from './tickets.repository.js';
+import MessageRepository from './message.repository.js';
 import ResetRepository from './reset.repository.js';
 
 //export const UserService = new UserRepository(new User());

@@ -10,8 +10,8 @@ export default class TicketRepository {
     return this.dao.create(dataToInsert);
   };
   
-  get = async (id) => {
-    return this.dao.get(id);
+  get = async () => {
+    return this.dao.get();
   };
   
 }

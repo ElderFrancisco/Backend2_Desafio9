@@ -3,7 +3,7 @@ import http from 'http';
 import setupRoutes from './routes/index.js';
 import bodyParser from 'body-parser';
 import exphbs from 'express-handlebars';
-//import utilSocket from './util/socket.js';
+import utilSocket from './util/socket.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -65,7 +65,7 @@ class Server {
   middlewares() {
     this.app.use(addLogger);
     this.app.use(errorHandler);
-    //utilSocket(this.server);
+    utilSocket(this.server);
   }
 
   routes() {
