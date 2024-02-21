@@ -5,7 +5,7 @@
     style="list-style-type: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center;"
   >
     {{#each cart.products}}
-      <li
+      <li id="li-card-{{product._id}}"
         class="card"
         style="width: 300px; margin: 20px; padding: 20px; border: 1px solid #ccc; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; text-align: center;"
       >
@@ -30,7 +30,7 @@
           <h2>Cantidad</h2>
           <p id="card-quantity-{{product._id}}">{{quantity}}</p>
           <button onclick="addProduct('{{product._id}}')">Agregar</button>
-          <button>Quitar</button>
+          <button onclick="removeProduct('{{product._id}}')" >Quitar</button>
         </div>
       </li>
 
@@ -55,16 +55,39 @@
         return response.json();
     })
       .then(data => {
-        // Actualiza la cantidad y muestra el resultado
-        console.log(data.payload.products)
         const productsList = data.payload.products
          const productInfo = productsList.find(p => p.product === product);
-
-
-         console.log(productInfo)
         const quantityProduct = document.getElementById(`card-quantity-${product}`)
         quantityProduct.textContent = productInfo.quantity
+      })
+      .catch(error => {
+        console.log('Error:', error);
+      });
+    }
 
+
+     function removeProduct(product) {
+    const cart = ('{{cart._id}}');
+      fetch(`/api/carts/${cart}/product/${product}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.json();
+    })
+      .then(data => {
+        const productsList = data.payload.products
+         const productInfo = productsList.find(p => p.product === product);
+         if (!productInfo) {
+          const quantityProduct = document.getElementById(`li-card-${product}`)
+          quantityProduct.remove()
+         }else{
+          const quantityProduct = document.getElementById(`card-quantity-${product}`)
+          quantityProduct.textContent = productInfo.quantity
+         }
+      
       })
       .catch(error => {
         console.log('Error:', error);
