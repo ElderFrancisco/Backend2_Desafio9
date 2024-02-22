@@ -1,1 +1,0 @@
-{ _id: new ObjectId('65cecef7c8ba6de9cd2c612a'), first_name: 'Francisco', last_name: 'Elder', email: 'franciscoelder0@gmail.com', age: 18, password: '$2b$10$F.6ZIeKspusuP6cxseH4nOsAKEfc0PPj0v0/WSYWpgxzwNAmwHAaS', rol: 'premium', cartId: new ObjectId('65cecef7c8ba6de9cd2c6128'), __v: 0 }
